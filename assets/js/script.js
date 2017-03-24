@@ -8,8 +8,8 @@ $(document).ready(function () {
   $playerInput = $('#playerInput')
 
   $testButton = $('#testButton')
-
-  var playerHP = 100
+  $playerHP = $('#playerHP')
+  var playerHP = 50
 
 //
 // var enemySpells = ['magical weather', 'darkness', 'serpensortia', 'dementors', 'stunned']
@@ -54,39 +54,35 @@ $(document).ready(function () {
 // startGame()
 
   Enemy.prototype.start = function () {
-    console.log('before keypress')
-    console.log(this)
-    $enemyHP.text('HP ' + this.hp)
+    // console.log('before keypress')
+    // console.log(this)
+    $enemyHP.text(this.name + '\'s HP ' + this.hp)
+    $playerHP.text('Your HP ' + playerHP)
     $playerInput.keypress(function (e) {
-      if (e.keyCode === 13) {
-        console.log('after keypress')
-        console.log(this)
+      if (e.keyCode === 13) {     // NOTE1: should change to non-enter check. player shouldnt have to press enter
+        // console.log('after keypress')
+        // console.log(this)
         this.playerInput()
       }
     }.bind(this))
   }
 
   Enemy.prototype.playerInput = function () {
-    console.log('check input here')
-    console.log(this)
-    if ($playerInput.val() !== this.currentCounter) {
-      console.log('no input or wrong input sir!')
+    // console.log('check input here')
+    // console.log(this)
+    if ($playerInput.val() !== this.currentCounter) { // NOTE1.1: if counter is correct, then activate function
+      // console.log('no input or wrong input sir!')
       $playerInput.val('')
     } else {
-      console.log('right input sir!')
+      // console.log('right input sir!')
       $playerInput.val('')
       // this.hp -= 10
-      $enemyHP.text('HP ' + (this.hp -= 10))
-      this.cast()
+      $enemyHP.text(this.name + '\'s HP ' + (this.hp -= 10))
+
+      this.cast() // NOTE2: call cast after gamecheck. else overlapping of cast
     }
   }
 
-
-
-  // function checkInput () {
-  //   console.log('check input here')
-  //   console.log(this)
-  // }
 
   function Enemy (name, spells, quote) {
     this.name = name
@@ -94,32 +90,33 @@ $(document).ready(function () {
     this.quote = quote
     this.timerId = 0
     this.countdown = 0
-    this.hp = 100
+    this.hp = 50
     this.modifier // later stage for difficulty settings
     this.currentCast = ''
     this.currentCounter = ''
     this.spells = [
       {name: 'magical weather',
         counter: 'meteolojinx recanto',
-        time: 3},
+        time: 4},
       {name: 'darkness',
         counter: 'lumos',
-        time: 3},
+        time: 4},
       {name: 'serpensortia',
         counter: 'vipera evanesca',
-        time: 3},
+        time: 4},
       {name: 'dementors',
         counter: 'expecto patronum',
-        time: 3},
+        time: 4},
       {name: 'stunned',
         counter: 'rennervate',
-        time: 3}
+        time: 4}
     ]
   }
 
   // generate spell to cast with Math.random on enemy.spells
   // output spell on page
   Enemy.prototype.cast = function () {
+    console.log('enemy casting!')
     // generate random spells
     var num = Math.floor(Math.random() * this.spells.length)
 
@@ -129,13 +126,35 @@ $(document).ready(function () {
 
     $h2.text(this.currentCast)
     $counterForCurrent.text(this.currentCounter)
-    this.timerId = window.setTimeout(this.endCast.bind(this), this.countdown)
+    this.timerId = window.setTimeout(this.playerDamaged.bind(this), this.countdown)
     // console.log(spellToCast)
   }
 
-  Enemy.prototype.endCast = function () {
+  Enemy.prototype.playerDamaged = function () { // NOTE1.2:
     console.log('Enemy cast ended!')
-    clearInterval(this.timerId)
+    playerHP -= 10
+    $playerHP.text('Your HP ' + playerHP)
+    if (!this.gameEnd()) {
+      clearInterval(this.timerId)
+      this.cast()
+    }
+  }
+
+  Enemy.prototype.gameEnd = function () {
+    if (this.hp === 0 || playerHP === 0) {
+      $playerInput.prop('disabled', true)
+      console.log('checking both hp!')
+      if (this.hp === 0) {
+        console.log('draco lost!')
+        $enemyHP.text('You\'ve defeated ' + this.name)
+      } else {
+        console.log('you lost!')
+        $enemyHP.text(this.name + ' has defeated you')
+      }
+      return true
+    } else {
+      return false
+    }
   }
 
   // $testButton.on('click', function () {
