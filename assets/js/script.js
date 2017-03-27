@@ -1,7 +1,7 @@
 $(document).ready(function () {
   console.log('linked!')
 
-  $textbox = $('#textbox')
+  // $textbox = $('#textbox')
   $enemyHP = $('#enemyHP') // change variable name later
   $counterForCurrent = $('#countercast')
 
@@ -152,11 +152,13 @@ $(document).ready(function () {
     // generate random spells
     var num = Math.floor(Math.random() * this[skillset].length)
 
+    $textbox1 = $('p.textbox1')
+
     this.currentCast = this[skillset][num].name
     this.currentCounter = this[skillset][num].counter
     this.countdown = this[skillset][num].time * 1000 * this.modifier
 
-    $textbox.text(this.currentCast + '!')
+    $textbox1.text(this.currentCast + '!')
     $counterForCurrent.text(this.currentCounter)
     // console.log(this.currentCounter)
 

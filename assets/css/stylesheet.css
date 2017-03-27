@@ -3,14 +3,8 @@
   box-sizing: border-box;
 }
 
-
-
 h1 {
   color: red;
-}
-
-div {
-
 }
 
 .outside { /* set media query to min width */
@@ -75,20 +69,35 @@ div {
   width: 100%;
 }
 
-#textbox {
+p.textbox1 {
   position: absolute;
-  border: 2px dashed #666;
+  border-bottom: 2px solid #666;
   width: 200px;
-  height: 100px;
-  text-align: center;
-  left: -200px;
-  bottom: 20px;
+  /* height: 50px; */
+  height: auto;
+  text-align: right;
+  left: -180px;
+  top: 52px;
   margin: 0;
   border-radius: 10px;
-  line-height: 100px;
+  line-height: 30px;
   text-transform: capitalize;
-  font-size: larger;
+  font-size: 30px;
+  padding: 0 5px 0 0;
+  font-variant: small-caps;
+  font-style: italic;
+  /* font-family: cursive; */
+}
 
+span.textbox1 {
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: 25px;
+  top: 60px;
+  border: 15px dashed #666;
+  border-color: transparent transparent transparent #666;
 }
 
 #momo {
