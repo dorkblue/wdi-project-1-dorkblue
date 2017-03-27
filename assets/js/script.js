@@ -11,78 +11,6 @@ $(document).ready(function () {
   $playerHP = $('#playerHP')
   var playerHP = 50
 
-//
-// var enemySpells = ['magical weather', 'darkness', 'serpensortia', 'dementors', 'stunned']
-//
-//
-//
-// var enemySpells = [
-//   {name: 'magical weather',
-//   counter: 'meteolojinx recanto'},
-//   {name: 'darkness',
-//   counter: 'lumos'},
-//   {name: 'serpensortia',
-//   counter: 'vipera evanesca'},
-//   {name: 'dementors',
-//   counter: 'expecto patronum'},
-//   {name: 'stunned',
-//   counter: 'rennervate'}
-// ]
-
-// function startGame () {
-//   var castTimer = setInterval(spellChooser, 2000)
-// }
-//
-// function spellChooser (spellArr) {
-//   var number = Math.floor(Math.random()) * spellArr.length
-//
-//   var spellToCast = spellArr[number].name
-//
-//   spellCast(spellToCast)
-//
-// }
-//
-// function spellCast (spell) {
-//   $h2.text(spell)
-// }
-// // var counterSpells =
-//
-// // enemySpells.forEach(function(spell){
-// //   console.log(spell.name, spell.counter)
-// // })
-//
-// startGame()
-
-  // Enemy.prototype.start = function () {
-  //   // console.log('before keypress')
-  //   // console.log(this)
-  //   $enemyHP.text(this.name + '\'s HP ' + this.enemyHP)
-  //   $playerHP.text('Your HP ' + playerHP)
-  //   $playerInput.keypress(function (e) {
-  //     if (e.keyCode === 13) {     // NOTE1: should change to non-enter check. player shouldnt have to press enter
-  //       // console.log('after keypress')
-  //       // console.log(this)
-  //       this.playerInput()
-  //     }
-  //   }.bind(this))
-  // }
-
-  // Enemy.prototype.playerInput = function () {
-  //   // console.log('check input here')
-  //   // console.log(this)
-  //   if ($playerInput.val() !== this.currentCounter) { // NOTE1.1: if counter is correct, then activate function
-  //     // console.log('no input or wrong input sir!')
-  //     $playerInput.val('')
-  //   } else {
-  //     // console.log('right input sir!')
-  //     $playerInput.val('')
-  //     // this.enemyHP -= 10
-  //     $enemyHP.text(this.name + '\'s HP ' + (this.enemyHP -= 10))
-  //
-  //     this.cast() // NOTE2: call cast after gamecheck. else overlapping of cast
-  //   }
-  // }
-
   Enemy.prototype.start = function () {
     // console.log('before keypress')
     // console.log(this)
@@ -92,6 +20,22 @@ $(document).ready(function () {
       // console.log('keypressed!')
       this.playerInput()
     }.bind(this))
+    this.counterListUpdate()
+    this.gameEnd()
+  }
+
+  Enemy.prototype.counterListUpdate = function () {
+    $countDiv = $('.counterlist')
+
+    this.counters.forEach(function (counter) {
+      $h4 = $('<h4>')
+      $h4.attr('id', counter)
+      $countDiv.append($h4.text(counter))
+
+      console.log(counter)
+      $test = $('<h4>')
+      console.log($test.text())
+    })
   }
 
   Enemy.prototype.playerInput = function () {
@@ -130,57 +74,78 @@ $(document).ready(function () {
         $enemyHP.text(this.name + ' has defeated you')
       }
     } else {
-      this.cast()
+      this.preCast()
     }
   }
 
-  Enemy.prototype.playerDamaged = function () { // NOTE1.2: separate dmg and checks to 2 diff fn
-    console.log('Enemy cast ended!')
-    this.playerHP -= 10
-    $playerHP.text('Your HP ' + this.playerHP)
-    if (!this.gameEnd()) {
-      clearInterval(this.castTimer)
-      this.cast()
+  Enemy.prototype.preCast = function () {
+    var num1 = Math.floor(Math.random() * this.skillSet1.length)
+    var num2 = Math.floor(Math.random() * this.skillSet2.length)
+
+    if (num1 > num2) {
+      this.cast('skillSet1')
+    } else if (num2 >= num1) {
+      this.cast('skillSet2')
     }
   }
 
-  Enemy.prototype.cast = function () {
+  Enemy.prototype.cast = function (skillset) {
     console.log('enemy casting!')
     // generate random spells
-    var num = Math.floor(Math.random() * this.spells.length)
+    var num = Math.floor(Math.random() * this[skillset].length)
 
-    this.currentCast = this.spells[num].name
-    this.currentCounter = this.spells[num].counter
-    this.countdown = this.spells[num].time * 1000
+    this.currentCast = this[skillset][num].name
+    this.currentCounter = this[skillset][num].counter
+    this.countdown = this[skillset][num].time * 1000
 
     $h2.text(this.currentCast)
     $counterForCurrent.text(this.currentCounter)
+    console.log(this.currentCounter)
+    var ID = this.currentCounter
+    $toShow = $('#' + ID)
+    $toShow.css('color', 'red')
+
     this.castTimer = window.setTimeout(this.damage.bind(this, 'playerHP'), this.countdown)
 
     // console.log(spellToCast)
   }
 
-  function Enemy (name, spells, quote) {
+  function Enemy (name, spells1, spells2, quote) {
     this.name = name
     this.quote = quote
     this.castTimer = 0
     this.countdown = 0
 
-    this.enemyHP = 50
+    this.enemyHP = 100
     this.enemyHPDisplay = $('#enemyHP')
-    this.playerHP = 50
+    this.playerHP = 200
     this.playerHPDisplay = $('#playerHP')
 
     this.currentCast = ''
     this.currentCounter = ''
 
     this.modifier // later stage for difficulty settings
-    this.numberofspells = spells // for later stage to generate random number of spells from the compendium
-    this.damageUpdate = function (whotoupdate) {
+    this.numSkillSet1 = spells1
+    this.numSkillSet2 = spells2
 
+    this.damageUpdate = function (whotoupdate) {
     }
 
-    this.spells = this.getSpells(this.numberofspells, spellCompendium)
+    this.skillSet1 = this.getSpells(this.numSkillSet1, compendium1)
+    this.skillSet2 = this.getSpells(this.numSkillSet2, compendium2)
+    this.counters = this.getCounters()
+  }
+
+  Enemy.prototype.getCounters = function () {
+    var allSkills = this.skillSet1.concat(this.skillSet2)
+    var allCounters = []
+
+    allSkills.forEach(function (skill) {
+      if (skill.counter !== 'dodge') {
+        allCounters.push(skill.counter)
+      }
+    })
+    return allCounters
   }
 
   Enemy.prototype.getSpells = function (number, compendiumToGetFrom) {
@@ -194,32 +159,82 @@ $(document).ready(function () {
       spellList.push(spellToInclude)
     }
     spellList = spellList.reduce(function (accu, val) {
-      console.log(accu, val)
       accu = accu.concat(val)
       return accu
     })
-    console.log(spellList.length)
+    console.log(spellList)
     return spellList
   }
 
-  var spellCompendium = [
-    {name: 'magical weather',
-      counter: 'meteolojinx recanto',
+  //
+  var compendium1 = [
+    {name: 'bombarda maxima',
+      counter: 'dodge',
       time: 4},
-    {name: 'darkness',
-      counter: 'lumos',
+    {name: 'fiendfyre',
+      counter: 'dodge',
       time: 3},
+    {name: 'baubillious',
+      counter: 'dodge',
+      time: 3},
+    {name: 'immobulus',
+      counter: 'dodge',
+      time: 3},
+    {name: 'glacius tria',
+      counter: 'dodge',
+      time: 3},
+    {name: 'confringo',
+      counter: 'confringo',
+      time: 3},
+    {name: 'levicorpus',
+      counter: 'liberacorpus',
+      time: 4},
     {name: 'serpensortia',
       counter: 'vipera evanesca',
       time: 4},
     {name: 'dementors',
       counter: 'expecto patronum',
       time: 4},
-    {name: 'stunned',
+    {name: 'stupefy',
       counter: 'rennervate',
+      time: 3},
+    {name: 'sectumsempra',
+      counter: 'vulnera sanentur',
+      time: 3},
+    {name: 'expelliarmus',
+      counter: 'expelliarmus',
+      time: 3},
+    {name: 'incendio tria',
+      counter: 'incendio tria',
       time: 3}
   ]
 
+  // var compendium2 = [
+  // ]
+  // insta death spells
+  var compendium2 = [
+    {name: 'avada kedavra',
+      counter: 'dodge',
+      time: 3},
+    {name: 'expulso',
+      counter: 'dodge',
+      time: 4},
+    {name: 'reducto',
+      counter: 'dodge',
+      time: 4}
+  ]
+
+  // for later stages extra effects
+  var compendium4 = [
+    {name: 'darkness',
+      counter: 'lumos',
+      time: 3},
+
+    {name: 'darkness',
+      counter: 'lumos',
+      time: 3}
+
+  ]
   // generate spell to cast with Math.random on enemy.spells
   // output spell on page
 
@@ -230,8 +245,8 @@ $(document).ready(function () {
   //   $h2.text(draco.cast())
   // })
 
-  var draco = new Enemy('Draco Malfoy', 5, 'Wait \'til my father hears about this!')
-  draco.cast()
+  var draco = new Enemy('Draco Malfoy', 10, 3, 'Wait \'til my father hears about this!')
+  // draco.cast()
   draco.start()
 
  // ////////////// SPELL SPEED TEST ///////////////
