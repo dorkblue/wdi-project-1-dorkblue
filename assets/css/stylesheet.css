@@ -22,6 +22,7 @@ div {
 
 .container {
   display: flex;
+  min-height: 342px;
   /*flex-wrap: wrap;*/
   /*flex-direction: row;*/
   width: 100%;
@@ -32,6 +33,7 @@ div {
 .board {
   display: flex;
   flex-direction: column;
+  align-content: center;
   /*background-color: green;*/
   width: 70%;
 }
@@ -39,15 +41,29 @@ div {
 .up {
   position: relative;
   height: 50%;
-  background-color: rgba(255, 255, 255, 0.5)
+  background-color: rgba(0, 0, 0, 0.5)
 }
 
-#lifebar {
+.down {
+  position: relative;
+  height: 50%;
+  background-color: rgba(0, 0, 0, 0.5)
+}
+
+#enemyHP {
   display: flex;
   position: absolute;
   left: 10px;
   top: 10px;
   flex-direction: row;
+}
+
+#playerHP {
+  display: flex;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  flex-direction: row-reverse;
 }
 
 #life {
@@ -66,7 +82,7 @@ div {
   height: 100px;
   text-align: center;
   left: -200px;
-  bottom: 0px;
+  bottom: 20px;
   margin: 0;
   border-radius: 10px;
   line-height: 100px;
@@ -78,17 +94,21 @@ div {
 #momo {
   position: absolute;
   right: 0;
+  bottom: 0;
+}
+
+#momo2 {
+  position: absolute;
+  left: 0;
   top: 0;
 }
 
-.down {
-  height: 50%;
-}
 
 .counterlist {
   background-color: rgba(0, 0, 0, 0.4);
   width: 30%;
-  text-transform: uppercase;;
+  text-transform: uppercase;
+  line-height: 0.8em;
   /*display: flex;
   justify-content: column;*/
 }

@@ -9,13 +9,40 @@ $(document).ready(function () {
 
   $testButton = $('#testButton')
   $playerHP = $('#playerHP')
-  var playerHP = 50
+
+  function Enemy (name, spells1, spells2, modifier, quote) {
+    this.name = name
+    this.quote = quote
+    this.castTimer = 0
+    this.countdown = 0
+
+    this.enemyHP = 90
+    this.enemyHPDisplay = $('#enemyHP')
+    this.playerHP = 70
+    this.playerHPDisplay = $('#playerHP')
+
+    this.currentCast = ''
+    this.currentCounter = ''
+
+    this.modifier = modifier
+    this.numSkillSet1 = spells1
+    this.numSkillSet2 = spells2
+
+    // this.damageUpdate = function (whotoupdate) {
+    // }
+
+    this.skillSet1 = this.getSpells(this.numSkillSet1, compendium1)
+
+    this.skillSet2 = this.getSpells(this.numSkillSet2, compendium2)
+    this.counters = this.getCounters()
+  }
 
   Enemy.prototype.start = function () {
     // console.log('before keypress')
     // console.log(this)
-    $enemyHP.text(this.name + '\'s HP ' + this.enemyHP)
-    $playerHP.text('Your HP ' + this.playerHP)
+    // $enemyHP.text(this.name + '\'s HP ' + this.enemyHP)
+    // $playerHP.text('Your HP ' + this.playerHP)
+
     $playerInput.keyup(function () {
       // console.log('keypressed!')
       this.playerInput()
@@ -56,18 +83,42 @@ $(document).ready(function () {
     $playerInput.val('')
     // if ()
     this[playerOrEnemy] -= 10
-    this[playerOrEnemy + 'Display'].text(this[playerOrEnemy])
+    // this[playerOrEnemy + 'Display'].text(this[playerOrEnemy])
     console.log(playerOrEnemy + this[playerOrEnemy])
-
+    this.heartsDisplay(playerOrEnemy)
     // check game status here
     this.gameEnd()
   }
 
+  Enemy.prototype.heartsDisplay = function (playerOrEnemy) {
+    console.log(playerOrEnemy)
+    $lifebar = $('#' + playerOrEnemy)
+    console.log($lifebar)
+    $life = $lifebar.find('div#life')
+    console.log($life)
 
-  
+    $life.remove()
 
+    var fullHeart = (this[playerOrEnemy] - this[playerOrEnemy] % 20) / 20
 
+    var halfHeart = (this[playerOrEnemy] % 20) / 10
 
+    for (var i = fullHeart; i > 0; i--) {
+      $div = $('<div>')
+      $div.attr('id', 'life')
+      $img = $('<img>').attr('src', 'assets/image/full-heart.png')
+      $div.append($img)
+      $lifebar.append($div)
+    }
+
+    for (var j = halfHeart; j > 0; j--) {
+      $div = $('<div>')
+      $div.attr('id', 'life')
+      $img = $('<img>').attr('src', 'assets/image/half-heart.png')
+      $div.append($img)
+      $lifebar.append($div)
+    }
+  }
 
   Enemy.prototype.gameEnd = function () {
     if (this.enemyHP === 0 || this.playerHP === 0) {
@@ -105,7 +156,7 @@ $(document).ready(function () {
     this.currentCounter = this[skillset][num].counter
     this.countdown = this[skillset][num].time * 1000 * this.modifier
 
-    $textbox.text(this.currentCast+'!')
+    $textbox.text(this.currentCast + '!')
     $counterForCurrent.text(this.currentCounter)
     // console.log(this.currentCounter)
 
@@ -120,49 +171,22 @@ $(document).ready(function () {
     $h4 = $('.counterlist h4')
 
     $h4.each(function (index, element) {
-      if ($(this).text() === counterToDisplay)
+      if ($(this).text() === counterToDisplay) {
         $(this).addClass('toggle1')
-
+      }
     })
-
   }
 
   Enemy.prototype.toggleDisplayOff = function (counterToRemoveDisplay) {
     $h4 = $('.counterlist h4')
 
     $h4.each(function (index, element) {
-      if ($(this).text() === counterToRemoveDisplay)
-      $(this).removeClass('toggle1')
-
+      if ($(this).text() === counterToRemoveDisplay) {
+        $(this).removeClass('toggle1')
+      }
     })
-
   }
 
-  function Enemy (name, spells1, spells2, modifier, quote) {
-    this.name = name
-    this.quote = quote
-    this.castTimer = 0
-    this.countdown = 0
-
-    this.enemyHP = 100
-    this.enemyHPDisplay = $('#enemyHP')
-    this.playerHP = 200
-    this.playerHPDisplay = $('#playerHP')
-
-    this.currentCast = ''
-    this.currentCounter = ''
-
-    this.modifier = modifier
-    this.numSkillSet1 = spells1
-    this.numSkillSet2 = spells2
-
-    this.damageUpdate = function (whotoupdate) {
-    }
-
-    this.skillSet1 = this.getSpells(this.numSkillSet1, compendium1)
-    this.skillSet2 = this.getSpells(this.numSkillSet2, compendium2)
-    this.counters = this.getCounters()
-  }
 
   Enemy.prototype.getCounters = function () {
     var allSkills = this.skillSet1.concat(this.skillSet2)
@@ -276,6 +300,7 @@ $(document).ready(function () {
   var draco = new Enemy('Draco Malfoy', 10, 3, 1, 'Wait \'til my father hears about this!')
   // draco.cast()
   draco.start()
+  // draco.heartsDisplay('playerHP')
 
  // ////////////// SPELL SPEED TEST ///////////////
   $divTest = $('div.test')
