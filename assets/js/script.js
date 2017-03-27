@@ -1,7 +1,7 @@
 $(document).ready(function () {
   console.log('linked!')
 
-  $h2 = $('#enemycast')
+  $textbox = $('#textbox')
   $enemyHP = $('#enemyHP') // change variable name later
   $counterForCurrent = $('#countercast')
 
@@ -51,6 +51,7 @@ $(document).ready(function () {
   }
 
   Enemy.prototype.damage = function (playerOrEnemy) {
+    this.toggleDisplayOff(this.currentCounter)
     clearInterval(this.castTimer)
     $playerInput.val('')
     // if ()
@@ -61,6 +62,12 @@ $(document).ready(function () {
     // check game status here
     this.gameEnd()
   }
+
+
+  
+
+
+
 
   Enemy.prototype.gameEnd = function () {
     if (this.enemyHP === 0 || this.playerHP === 0) {
@@ -96,21 +103,42 @@ $(document).ready(function () {
 
     this.currentCast = this[skillset][num].name
     this.currentCounter = this[skillset][num].counter
-    this.countdown = this[skillset][num].time * 1000
+    this.countdown = this[skillset][num].time * 1000 * this.modifier
 
-    $h2.text(this.currentCast)
+    $textbox.text(this.currentCast+'!')
     $counterForCurrent.text(this.currentCounter)
-    console.log(this.currentCounter)
-    var ID = this.currentCounter
-    $toShow = $('#' + ID)
-    $toShow.css('color', 'red')
+    // console.log(this.currentCounter)
+
+    this.toggleDisplayOn(this.currentCounter)
 
     this.castTimer = window.setTimeout(this.damage.bind(this, 'playerHP'), this.countdown)
 
     // console.log(spellToCast)
   }
 
-  function Enemy (name, spells1, spells2, quote) {
+  Enemy.prototype.toggleDisplayOn = function (counterToDisplay) {
+    $h4 = $('.counterlist h4')
+
+    $h4.each(function (index, element) {
+      if ($(this).text() === counterToDisplay)
+        $(this).addClass('toggle1')
+
+    })
+
+  }
+
+  Enemy.prototype.toggleDisplayOff = function (counterToRemoveDisplay) {
+    $h4 = $('.counterlist h4')
+
+    $h4.each(function (index, element) {
+      if ($(this).text() === counterToRemoveDisplay)
+      $(this).removeClass('toggle1')
+
+    })
+
+  }
+
+  function Enemy (name, spells1, spells2, modifier, quote) {
     this.name = name
     this.quote = quote
     this.castTimer = 0
@@ -124,7 +152,7 @@ $(document).ready(function () {
     this.currentCast = ''
     this.currentCounter = ''
 
-    this.modifier // later stage for difficulty settings
+    this.modifier = modifier
     this.numSkillSet1 = spells1
     this.numSkillSet2 = spells2
 
@@ -162,48 +190,48 @@ $(document).ready(function () {
       accu = accu.concat(val)
       return accu
     })
-    console.log(spellList)
+    // console.log(spellList)
     return spellList
   }
 
   //
   var compendium1 = [
     {name: 'bombarda maxima',
-      counter: 'dodge',
-      time: 4},
+      counter: 'protego maxima',
+      time: 5},
     {name: 'fiendfyre',
-      counter: 'dodge',
-      time: 3},
+      counter: 'fiendfyre',
+      time: 5},
     {name: 'baubillious',
-      counter: 'dodge',
-      time: 3},
+      counter: 'protego',
+      time: 5},
     {name: 'immobulus',
-      counter: 'dodge',
-      time: 3},
+      counter: 'protego duo',
+      time: 5},
     {name: 'glacius tria',
-      counter: 'dodge',
-      time: 3},
+      counter: 'bombarda maxima',
+      time: 5},
     {name: 'confringo',
       counter: 'confringo',
-      time: 3},
+      time: 5},
     {name: 'levicorpus',
       counter: 'liberacorpus',
-      time: 4},
+      time: 5},
     {name: 'serpensortia',
       counter: 'vipera evanesca',
-      time: 4},
+      time: 5},
     {name: 'dementors',
       counter: 'expecto patronum',
-      time: 4},
+      time: 5},
     {name: 'stupefy',
       counter: 'rennervate',
-      time: 3},
+      time: 5},
     {name: 'sectumsempra',
       counter: 'vulnera sanentur',
-      time: 3},
+      time: 5},
     {name: 'expelliarmus',
       counter: 'expelliarmus',
-      time: 3},
+      time: 5},
     {name: 'incendio tria',
       counter: 'incendio tria',
       time: 3}
@@ -218,10 +246,10 @@ $(document).ready(function () {
       time: 3},
     {name: 'expulso',
       counter: 'dodge',
-      time: 4},
+      time: 3},
     {name: 'reducto',
       counter: 'dodge',
-      time: 4}
+      time: 3}
   ]
 
   // for later stages extra effects
@@ -241,11 +269,11 @@ $(document).ready(function () {
   // $testButton.on('click', function () {
   //   var test = draco.cast()
   //   // console.log(test)
-  //   // console.log($h2)
-  //   $h2.text(draco.cast())
+  //   // console.log($textbox)
+  //   $textbox.text(draco.cast())
   // })
 
-  var draco = new Enemy('Draco Malfoy', 10, 3, 'Wait \'til my father hears about this!')
+  var draco = new Enemy('Draco Malfoy', 10, 3, 1, 'Wait \'til my father hears about this!')
   // draco.cast()
   draco.start()
 

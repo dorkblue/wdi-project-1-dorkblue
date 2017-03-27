@@ -13,10 +13,11 @@ div {
 
 }
 
-.outside {
+.outside { /* set media query to min width */
   display: flex;
   flex-direction: column;
-  width: 90%;
+  width: 600px;
+  margin: 0 auto;
 }
 
 .container {
@@ -24,18 +25,70 @@ div {
   /*flex-wrap: wrap;*/
   /*flex-direction: row;*/
   width: 100%;
-  background-color: grey;
+  /*background-color: grey;*/
   justify-content: center;
 }
 
 .board {
-  background-color: green;
+  display: flex;
+  flex-direction: column;
+  /*background-color: green;*/
   width: 70%;
 }
 
+.up {
+  position: relative;
+  height: 50%;
+  background-color: rgba(255, 255, 255, 0.5)
+}
+
+#lifebar {
+  display: flex;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  flex-direction: row;
+}
+
+#life {
+  width: 20px;
+  margin: 0 5px 0 0;
+}
+
+#life img {
+  width: 100%;
+}
+
+#textbox {
+  position: absolute;
+  border: 2px dashed #666;
+  width: 200px;
+  height: 100px;
+  text-align: center;
+  left: -200px;
+  bottom: 0px;
+  margin: 0;
+  border-radius: 10px;
+  line-height: 100px;
+  text-transform: capitalize;
+  font-size: larger;
+
+}
+
+#momo {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.down {
+  height: 50%;
+}
+
 .counterlist {
-  background-color: blue;
+  background-color: rgba(0, 0, 0, 0.4);
   width: 30%;
+  text-transform: uppercase;;
   /*display: flex;
   justify-content: column;*/
 }
@@ -48,4 +101,12 @@ div {
 #playerInput {
   width: 100%;
   height: 30px;
+}
+
+.toggle1 {
+  color: white;
+}
+
+.toggle2 {
+  color: black;
 }
