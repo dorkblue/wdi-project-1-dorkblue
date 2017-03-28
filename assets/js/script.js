@@ -51,6 +51,7 @@ $(document).ready(function () {
   Enemy.prototype.counterListUpdate = function () {
     $countDiv = $('.counterlist')
 
+
     $countDiv.empty()
 
     this.counters.forEach(function (counter) {
@@ -86,6 +87,10 @@ $(document).ready(function () {
   Enemy.prototype.damage = function (playerOrEnemy) {
     $textbox1 = $('p.textbox1')
     $textbox2 = $('p.textbox2')
+    $countdownDisplay = $('#countdown')
+
+    $countdownDisplay.toggleClass('animate')
+
     if (playerOrEnemy === 'playerHP') {
       $textbox1.css('color', 'red')
       $textbox2.css('display', 'none')
@@ -178,7 +183,7 @@ $(document).ready(function () {
 
   Enemy.prototype.cast = function (skillset) {
     $textbox1 = $('p.textbox1')
-    $countdownBar = $('#')
+    $countdownDisplay = $('#countdown')
     console.log('enemy casting!')
     // generate random spells
     var num = Math.floor(Math.random() * this[skillset].length)
@@ -192,8 +197,9 @@ $(document).ready(function () {
     $textbox1.css('color', 'black')
 
     $textbox1.text(this.currentCast + '!')
+    $countdownDisplay.css('animation-duration', (this[skillset][num].time + this.modifier) + 's')
+    $countdownDisplay.toggleClass('animate')
 
-    // $playerInput.css('background-color', 'white')
     // $counterForCurrent.text(this.currentCounter)
     // console.log(this.currentCounter)
 
