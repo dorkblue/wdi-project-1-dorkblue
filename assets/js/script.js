@@ -10,16 +10,22 @@ $(document).ready(function () {
   $overlay = $('.overlay')
   $momo = $('#momo2 img')
   $evilmomo = $('#momo img')
+  $restart = $('.restart')
+  $winscreen = $('.winscreen')
+  $losescreen = $('.losescreen')
+  $textbox1 = $('p.textbox1')
+  $textbox2 = $('p.textbox2')
 
   function Enemy (name, spells1, spells2, modifier, quote) {
     this.name = name
     this.quote = quote
     this.castTimer = 0
+    this.timerId = 0
     this.countdown = 0
 
-    this.enemyHP = 100
+    this.enemyHP = 60
     this.enemyHPDisplay = $('#enemyHP')
-    this.playerHP = 100
+    this.playerHP = 60
     this.playerHPDisplay = $('#playerHP')
 
     this.currentCast = ''
@@ -41,16 +47,16 @@ $(document).ready(function () {
 
   Enemy.prototype.start = function () {
     $playerInput.keyup(function () {
-      // console.log('keypressed!')
       this.playerInput()
     }.bind(this))
+    this.heartsDisplay('playerHP')
+    this.heartsDisplay('enemyHP')
     this.counterListUpdate()
     this.gameEnd()
   }
 
   Enemy.prototype.counterListUpdate = function () {
     $countDiv = $('.counterlist')
-
 
     $countDiv.empty()
 
@@ -62,19 +68,12 @@ $(document).ready(function () {
       $countDiv.append($div)
 
       console.log(counter)
-      // $test = $('<td>')
-      // console.log($test.text())
     })
   }
 
   Enemy.prototype.playerInput = function () {
-    // console.log('check input here')
-    // console.log($playerInput.val())
-    // console.log(this.currentCounter)
-    // console.log(this)
-    $textbox2 = $('p.textbox2')
-    if ($playerInput.val() === this.currentCounter) { // NOTE1.1: if counter is correct, then activate function
-
+    // $textbox2 = $('p.textbox2')
+    if ($playerInput.val() === this.currentCounter) {
       console.log('right input!')
       $textbox2.text($playerInput.val())
       $textbox2.css('display', 'inline')
@@ -85,18 +84,18 @@ $(document).ready(function () {
   }
 
   Enemy.prototype.damage = function (playerOrEnemy) {
-    $textbox1 = $('p.textbox1')
-    $textbox2 = $('p.textbox2')
+    // $textbox1 = $('p.textbox1')
+    // $textbox2 = $('p.textbox2')
     $countdownDisplay = $('#countdown')
 
     $countdownDisplay.toggleClass('animate')
 
     if (playerOrEnemy === 'playerHP') {
-      $textbox1.css('color', 'red')
+      // $textbox1.css('color', 'red')
       $textbox2.css('display', 'none')
     } else if (playerOrEnemy === 'enemyHP') {
       $textbox1.css('display', 'none')
-      $textbox2.css('color', 'red')
+      // $textbox2.css('color', 'red')
     }
 
     this.toggleDisplayOff(this.currentCounter)
@@ -145,23 +144,35 @@ $(document).ready(function () {
     }
   }
 
+  function winscreen () {
+    $winscreen.css('display', 'block')
+  }
+
+  function losescreen () {
+    $losescreen.css('display', 'block')
+  }
+
   Enemy.prototype.gameEnd = function () {
     if (this.enemyHP <= 0 || this.playerHP <= 0) {
+      console.log(this)
+      console.log(this.enemyHP)
+      console.log(this.playerHP)
       $playerInput.prop('disabled', true)
       console.log('checking both enemyHP!')
-      if (this.enemyHP === 0) {
-        $momo.attr('src', 'assets/image/momo-victorypose.gif')
+      if (this.enemyHP <= 0) {
+        this.timerId = setTimeout(winscreen, 2000)
+        // $momo.attr('src', 'assets/image/momo-victorypose.gif')
         console.log('momo won!')
-      } else {
+      } else if (this.playerHP <= 0) {
+        this.timerId = setTimeout(losescreen, 2000)
+
         console.log('momo lost!')
       }
     } else {
-      setTimeout(this.preCast.bind(this), 800)
+      this.timerId = setTimeout(this.preCast.bind(this), 800)
       // this.preCast()
     }
   }
-
-
 
   Enemy.prototype.preCast = function () {
     $momo.attr('src', 'assets/image/momo-standby.gif')
@@ -175,14 +186,14 @@ $(document).ready(function () {
     $textbox2.css('display', 'none')
 
     if (num1 > num2) {
-      setTimeout(this.cast.bind(this, 'skillSet1'), 2000)
+      this.timerId = setTimeout(this.cast.bind(this, 'skillSet1'), 2000)
     } else if (num2 >= num1) {
-      setTimeout(this.cast.bind(this, 'skillSet2'), 2000)
+      this.timerId = setTimeout(this.cast.bind(this, 'skillSet2'), 2000)
     }
   }
 
   Enemy.prototype.cast = function (skillset) {
-    $textbox1 = $('p.textbox1')
+    // $textbox1 = $('p.textbox1')
     $countdownDisplay = $('#countdown')
     console.log('enemy casting!')
     // generate random spells
@@ -247,15 +258,11 @@ $(document).ready(function () {
     var spellList = []
 
     while (number !== spellList.length) {
-      console.log('compendium length ' + compendium1.length)
       var RNG = Math.floor(Math.random() * spellsPlaceholder.length)
-      console.log('RNG ' + RNG)
 
       var spellToInclude = spellsPlaceholder.splice(RNG, 1)
-      console.log(spellToInclude)
 
       spellList.push(spellToInclude)
-      console.log('list length ' + spellList.length)
     }
     return spellList.reduce(function (accu, val) {
       accu = accu.concat(val)
@@ -266,88 +273,121 @@ $(document).ready(function () {
   }
 
   //
-  var compendium1 = [
-    {name: 'bombarda maxima',
-      counter: 'protego maxima',
-      time: 5,
-    dmg: -20},
-    {name: 'fiendfyre',
+  var compendium1 = [{
+    name: 'bombarda maxima',
+    counter: 'protego maxima',
+    time: 5,
+    dmg: -20
+  },
+    {
+      name: 'fiendfyre',
       counter: 'fiendfyre',
       time: 5,
-    dmg: -10},
-    {name: 'baubillious',
+      dmg: -10
+    },
+    {
+      name: 'baubillious',
       counter: 'protego',
       time: 4,
-    dmg: -10},
-    {name: 'immobulus',
+      dmg: -10
+    },
+    {
+      name: 'immobulus',
       counter: 'protego duo',
       time: 5,
-    dmg: -10},
-    {name: 'glacius tria',
+      dmg: -10
+    },
+    {
+      name: 'glacius tria',
       counter: 'bombarda maxima',
       time: 5,
-    dmg: -10},
-    {name: 'confringo',
+      dmg: -10
+    },
+    {
+      name: 'confringo',
       counter: 'confringo',
       time: 4,
-    dmg: -10},
-    {name: 'levicorpus',
+      dmg: -10
+    },
+    {
+      name: 'levicorpus',
       counter: 'liberacorpus',
       time: 5,
-    dmg: -10},
-    {name: 'serpensortia',
+      dmg: -10
+    },
+    {
+      name: 'serpensortia',
       counter: 'vipera evanesca',
       time: 5,
-    dmg: -10},
-    {name: 'dementors',
+      dmg: -10
+    },
+    {
+      name: 'dementors',
       counter: 'expecto patronum',
       time: 5,
-    dmg: -20},
-    {name: 'stupefy',
+      dmg: -20
+    },
+    {
+      name: 'stupefy',
       counter: 'rennervate',
       time: 4,
-    dmg: -10},
-    {name: 'sectumsempra',
+      dmg: -10
+    },
+    {
+      name: 'sectumsempra',
       counter: 'vulnera sanentur',
       time: 5,
-    dmg: -20},
-    {name: 'expelliarmus',
+      dmg: -20
+    },
+    {
+      name: 'expelliarmus',
       counter: 'expelliarmus',
       time: 5,
-    dmg: -10},
-    {name: 'incendio tria',
+      dmg: -10
+    },
+    {
+      name: 'incendio tria',
       counter: 'incendio tria',
       time: 5,
-    dmg: -10}
+      dmg: -10
+    }
   ]
 
   // var compendium2 = [
   // ]
   // insta death spells
-  var compendium2 = [
-    {name: 'avada kedavra',
+  var compendium2 = [{
+    name: 'avada kedavra',
+    counter: 'dodge',
+    time: 3,
+    dmg: -100
+  },
+    {
+      name: 'expulso',
       counter: 'dodge',
       time: 3,
-    dmg: -100},
-    {name: 'expulso',
+      dmg: -100
+    },
+    {
+      name: 'reducto',
       counter: 'dodge',
       time: 3,
-    dmg: -100},
-    {name: 'reducto',
-      counter: 'dodge',
-      time: 3,
-    dmg: -100}
+      dmg: -100
+    }
   ]
 
   // for later stages extra effects
-  var compendium4 = [
-    {name: 'darkness',
-      counter: 'lumos',
-      time: 3},
+  var compendium4 = [{
+    name: 'darkness',
+    counter: 'lumos',
+    time: 3
+  },
 
-    {name: 'darkness',
+    {
+      name: 'darkness',
       counter: 'lumos',
-      time: 3}
+      time: 3
+    }
   ]
 
   var preStart = new Enemy('', 4, 1, 0)
@@ -358,7 +398,18 @@ $(document).ready(function () {
     evilmomo.start()
     $startButton.css('display', 'none')
     $overlay.hide()
-
   })
 
+  $restart.on('click', function () {
+    $winscreen.css('display', 'none')
+    $losescreen.css('display', 'none')
+    $textbox1.css('display', 'none')
+    $textbox2.css('display', 'none')
+    $momo.attr('src', 'assets/image/momo-standby.gif')
+    $evilmomo.attr('src', 'assets/image/evil-momo-standby.gif')
+    $playerInput.prop('disabled', false)
+    evilmomo = null
+    evilmomo = new Enemy('Evil Momo', 13, 3, 0)
+    evilmomo.start()
+  })
 })

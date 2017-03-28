@@ -4,12 +4,12 @@
 <head>
   <meta charset="utf-8">
   <link rel="stylesheet" href="assets/css/stylesheet.css">
-  <title></title>
+  <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Source+Code+Pro" rel="stylesheet">
 </head>
 
 <body>
   <header>
-    <h1>Momo vs Evil Momo</h1>
+    <h1>Momo The Wizard</h1>
   </header>
 
   <div class="outside">
@@ -105,15 +105,25 @@
 
       </div>
 
+      <div class="winscreen">
+        <p>Momo Won!</p>
+        <img src="assets/image/momo-victorypose-trans.gif" alt="">
+        <button type="button" name="restart" class="restart">Play Again.</button>
+      </div>
+      <div class="losescreen">
+        <p>Momo Lost!</p>
+        <img src="assets/image/momo-lost.gif" alt="">
+        <button type="button" name="restart" class="restart">Play Again.</button>
+      </div>
+
     </div>
+
     <div id="countdown" class>
-
-
     </div>
 
     <div class="player">
       <button id="startbutton" type="button" name="button">Start</button>
-      <input id='playerInput' type="text" name="" value="" placeholder="Player Input Here" autofocus="">
+      <input id='playerInput' autotcorrect="off" spellcheck="false" autocomplete="off" type="text" name="" value="" placeholder="Player Input Here" autofocus="">
     </div>
   </div>
 
