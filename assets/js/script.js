@@ -8,14 +8,8 @@ $(document).ready(function () {
   $playerInput = $('#playerInput')
   $startButton = $('#startbutton')
   $overlay = $('.overlay')
-  $startButton.on('click', function () {
-    // console.log('clicked!')
-    var evilmomo = new Enemy('Evil Momo', 10, 3, -1)
-    evilmomo.start()
-    $startButton.css('display', 'none')
-    $overlay.hide()
-
-  })
+  $momo = $('#momo2 img')
+  $evilmomo = $('#momo img')
 
   function Enemy (name, spells1, spells2, modifier, quote) {
     this.name = name
@@ -25,11 +19,12 @@ $(document).ready(function () {
 
     this.enemyHP = 100
     this.enemyHPDisplay = $('#enemyHP')
-    this.playerHP = 50
+    this.playerHP = 100
     this.playerHPDisplay = $('#playerHP')
 
     this.currentCast = ''
     this.currentCounter = ''
+    this.currentDMG = 0
 
     this.modifier = modifier
     this.numSkillSet1 = spells1
@@ -59,9 +54,11 @@ $(document).ready(function () {
     $countDiv.empty()
 
     this.counters.forEach(function (counter) {
-      $td = $('<td>')
+      $div = $('<div>')
+      $td = $('<td>').text(counter)
+      $div.append($td)
       // $td.attr('id', counter)
-      $countDiv.append($td.text(counter))
+      $countDiv.append($div)
 
       console.log(counter)
       // $test = $('<td>')
@@ -76,6 +73,7 @@ $(document).ready(function () {
     // console.log(this)
     $textbox2 = $('p.textbox2')
     if ($playerInput.val() === this.currentCounter) { // NOTE1.1: if counter is correct, then activate function
+
       console.log('right input!')
       $textbox2.text($playerInput.val())
       $textbox2.css('display', 'inline')
@@ -99,10 +97,16 @@ $(document).ready(function () {
     this.toggleDisplayOff(this.currentCounter)
     clearInterval(this.castTimer)
     $playerInput.val('')
-    // if ()
-    this[playerOrEnemy] -= 10
-    // this[playerOrEnemy + 'Display'].text(this[playerOrEnemy])
-    console.log(playerOrEnemy + this[playerOrEnemy])
+
+    if (playerOrEnemy === 'playerHP') {
+      $evilmomo.attr('src', 'assets/image/evil-momo-cast.gif')
+      $momo.attr('src', 'assets/image/momo-hurt.gif')
+      this[playerOrEnemy] += this.currentDMG
+    } else if (playerOrEnemy === 'enemyHP') {
+      $momo.attr('src', 'assets/image/momo-cast.gif')
+      $evilmomo.attr('src', 'assets/image/evil-momo-hurt.gif')
+      this[playerOrEnemy] -= 10
+    }
     this.heartsDisplay(playerOrEnemy)
     // check game status here
     this.gameEnd()
@@ -137,21 +141,26 @@ $(document).ready(function () {
   }
 
   Enemy.prototype.gameEnd = function () {
-    if (this.enemyHP === 0 || this.playerHP === 0) {
+    if (this.enemyHP <= 0 || this.playerHP <= 0) {
       $playerInput.prop('disabled', true)
       console.log('checking both enemyHP!')
       if (this.enemyHP === 0) {
+        $momo.attr('src', 'assets/image/momo-victorypose.gif')
         console.log('momo won!')
       } else {
         console.log('momo lost!')
       }
     } else {
-      setTimeout(this.preCast.bind(this), 1000)
+      setTimeout(this.preCast.bind(this), 800)
       // this.preCast()
     }
   }
 
+
+
   Enemy.prototype.preCast = function () {
+    $momo.attr('src', 'assets/image/momo-standby.gif')
+    $evilmomo.attr('src', 'assets/image/evil-momo-standby.gif')
     var num1 = Math.floor(Math.random() * this.skillSet1.length)
     var num2 = Math.floor(Math.random() * this.skillSet2.length)
 
@@ -175,12 +184,14 @@ $(document).ready(function () {
 
     this.currentCast = this[skillset][num].name
     this.currentCounter = this[skillset][num].counter
+    this.currentDMG = this[skillset][num].dmg
     this.countdown = (this[skillset][num].time + this.modifier) * 1000
 
     $textbox1.css('display', 'inline')
     $textbox1.css('color', 'black')
 
     $textbox1.text(this.currentCast + '!')
+    // $playerInput.css('background-color', 'white')
     // $counterForCurrent.text(this.currentCounter)
     // console.log(this.currentCounter)
 
@@ -224,64 +235,82 @@ $(document).ready(function () {
   }
 
   Enemy.prototype.getSpells = function (number, compendiumToGetFrom) {
-    var spellsPlaceholder = compendiumToGetFrom
+    var spellsPlaceholder = compendiumToGetFrom.slice(0)
     var spellList = []
 
     while (number !== spellList.length) {
+      console.log('compendium length ' + compendium1.length)
       var RNG = Math.floor(Math.random() * spellsPlaceholder.length)
+      console.log('RNG ' + RNG)
+
       var spellToInclude = spellsPlaceholder.splice(RNG, 1)
+      console.log(spellToInclude)
 
       spellList.push(spellToInclude)
+      console.log('list length ' + spellList.length)
     }
-    spellList = spellList.reduce(function (accu, val) {
+    return spellList.reduce(function (accu, val) {
       accu = accu.concat(val)
       return accu
     })
-    // console.log(spellList)
-    return spellList
+    // console.log(spellList.length)
+    // return this.spellList
   }
 
   //
   var compendium1 = [
     {name: 'bombarda maxima',
       counter: 'protego maxima',
-      time: 5},
+      time: 5,
+    dmg: -20},
     {name: 'fiendfyre',
       counter: 'fiendfyre',
-      time: 5},
+      time: 5,
+    dmg: -10},
     {name: 'baubillious',
       counter: 'protego',
-      time: 5},
+      time: 4,
+    dmg: -10},
     {name: 'immobulus',
       counter: 'protego duo',
-      time: 5},
+      time: 5,
+    dmg: -10},
     {name: 'glacius tria',
       counter: 'bombarda maxima',
-      time: 5},
+      time: 5,
+    dmg: -10},
     {name: 'confringo',
       counter: 'confringo',
-      time: 5},
+      time: 4,
+    dmg: -10},
     {name: 'levicorpus',
       counter: 'liberacorpus',
-      time: 5},
+      time: 5,
+    dmg: -10},
     {name: 'serpensortia',
       counter: 'vipera evanesca',
-      time: 5},
+      time: 5,
+    dmg: -10},
     {name: 'dementors',
       counter: 'expecto patronum',
-      time: 5},
+      time: 5,
+    dmg: -20},
     {name: 'stupefy',
       counter: 'rennervate',
-      time: 5},
+      time: 4,
+    dmg: -10},
     {name: 'sectumsempra',
       counter: 'vulnera sanentur',
-      time: 5},
+      time: 5,
+    dmg: -20},
     {name: 'expelliarmus',
       counter: 'expelliarmus',
-      time: 5},
+      time: 5,
+    dmg: -10},
     {name: 'incendio tria',
       counter: 'incendio tria',
-      time: 3}
+      time: 5,
+    dmg: -10}
   ]
 
   // var compendium2 = [
@@ -290,13 +319,16 @@ $(document).ready(function () {
   var compendium2 = [
     {name: 'avada kedavra',
       counter: 'dodge',
-      time: 3},
+      time: 3,
+    dmg: -100},
     {name: 'expulso',
       counter: 'dodge',
-      time: 3},
+      time: 3,
+    dmg: -100},
     {name: 'reducto',
       counter: 'dodge',
-      time: 3}
+      time: 3,
+    dmg: -100}
   ]
 
   // for later stages extra effects
@@ -308,9 +340,17 @@ $(document).ready(function () {
     {name: 'darkness',
       counter: 'lumos',
       time: 3}
-
   ]
 
   var preStart = new Enemy('', 4, 1, 0)
   preStart.counterListUpdate()
+  $startButton.on('click', function () {
+    // console.log('clicked!')
+    var evilmomo = new Enemy('Evil Momo', 13, 3, 0)
+    evilmomo.start()
+    $startButton.css('display', 'none')
+    $overlay.hide()
+
+  })
+
 })

@@ -3,17 +3,14 @@
   box-sizing: border-box;
 }
 
-h1 {
-  color: red;
-}
+h1 {}
 
-.outside { /* set media query to min width */
+.outside {
   display: flex;
   flex-direction: column;
   width: 600px;
   margin: 0 auto;
 }
-
 
 .container {
   position: relative;
@@ -23,9 +20,10 @@ h1 {
   /* flex-wrap: wrap; */
   /* flex-direction: row; */
   width: 100%;
-  /* background-color: grey; */
+   /*background-color: rgba(100,100,100,0.5);*/
   justify-content: center;
 }
+
 .overlay {
   display: block;
   position: absolute;
@@ -34,7 +32,6 @@ h1 {
   margin: auto 0;
   background-color: rgba(194, 194, 194, 0.4);
   z-index: 2;
-
 }
 
 .shading {
@@ -43,40 +40,8 @@ h1 {
   width: 100%;
   height: 100%;
   margin: auto 0;
-  background-color: rgba(51, 204, 255, 0.1);
+  background-color: rgba(51, 204, 255, 0.05);
   z-index: 1;
-}
-
-#arrowdown {
-  position: absolute;
-  right: 70px;
-  bottom: 110px;
-  width: 50px;
-}
-#arrowleft {
-  position: absolute;
-  left: 140px;
-  bottom: 70px;
-  width: 100px;
-}
-/*#arrowright {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100px;
-}*/
-#smallarrowup {
-  position: absolute;
-  left: 50px;
-  top: 25px;
-  width: 35px;
-}
-#smallarrowdown {
-  position: absolute;
-  left: 250px;
-  top: 30px;
-  width: 50px;
-  transform: rotate(-20deg);
 }
 
 .board {
@@ -97,22 +62,6 @@ h1 {
   position: relative;
   height: 50%;
   /*background-color: rgba(0, 0, 0, 0.5)*/
-}
-
-#enemyHP {
-  display: flex;
-  position: absolute;
-  left: 10px;
-  top: 10px;
-  flex-direction: row;
-}
-
-#playerHP {
-  display: flex;
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  flex-direction: row-reverse;
 }
 
 .life {
@@ -142,11 +91,13 @@ p.textbox1 {
   padding: 0 5px 0 0;
   font-variant: small-caps;
   font-style: italic;
+  transition-property: color;
+  transition-delay: 1s;
   /* font-family: cursive; */
 }
 
 p.textbox2 {
-   display: none;
+  display: none;
   position: absolute;
   border-bottom: 2px solid #666;
   width: 200px;
@@ -166,17 +117,121 @@ p.textbox2 {
   /* font-family: cursive; */
 }
 
-/*span.textbox1 {
-  display: none;
-  content: ' ';
+.counterlist {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-start;
+
+  background-color: rgba(0, 0, 0, 0.4);
+  width: 30%;
+  text-transform: uppercase;
+  line-height: 0.8em;
+  /*display: flex;
+  justify-content: column;*/
+}
+
+.counterlist div {
+  margin: 7px auto;
+
+}
+
+.playerInput {
+  position: relative;
+  background-color: yellow;
+  width: 100%;
+  height: 30px;
+}
+
+.toggle1 {
+  color: white;
+}
+
+.toggle2 {
+  color: black;
+}
+
+#instruction {
   position: absolute;
-  width: 0;
-  height: 0;
-  left: 25px;
-  top: 60px;
-  border: 15px dashed #666;
-  border-color: transparent transparent transparent #666;
-}*/
+  display: block;
+  width: 200px;
+  left: 200px;
+  bottom: 35px;
+}
+
+#instruction img {
+  position: absolute;
+  left: -80px;
+  bottom: 25px;
+  width: 80px;
+}
+
+#instruction p {
+  text-align: justify;
+}
+
+#info1 {
+  position: absolute;
+  right: 10px;
+  top: 0px;
+  width: 160px;
+}
+
+#info1 p {
+  text-align: justify;
+}
+
+#info1 img {
+  position: absolute;
+  right: 70px;
+  bottom: -120px;
+  width: 50px;
+}
+
+#info2 {
+  position: absolute;
+  top: 0px;
+  right: 200px;
+}
+
+#info2 p {}
+
+#info2 img {
+  position: absolute;
+  left: 0px;
+  bottom: -40px;
+  width: 50px;
+  transform: rotate(-20deg);
+}
+
+#info3 {
+  position: absolute;
+  top: 70px;
+  left: 20px;
+  width: 100px;
+}
+
+#info3 img {
+  position: absolute;
+  left: 40px;
+  top: -50px;
+  width: 30px;
+}
+
+#enemyHP {
+  display: flex;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  flex-direction: row;
+}
+
+#playerHP {
+  display: flex;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  flex-direction: row-reverse;
+}
 
 #momo {
   position: absolute;
@@ -190,35 +245,14 @@ p.textbox2 {
   top: 0;
 }
 
-
-.counterlist {
-  display: flex;
-  flex-direction: column-reverse;
-  background-color: rgba(0, 0, 0, 0.4);
-  width: 30%;
-  text-transform: uppercase;
-  line-height: 0.8em;
-  /*display: flex;
-  justify-content: column;*/
-}
-
-.counterlist td {
-  margin: 7px auto;
-}
-
-.playerInput {
-  position: relative;
-  background-color: yellow;
-  width: 100%;
-  height: 30px;
-}
-
 #playerInput {
   position: absolute;
   width: 100%;
   height: 100%;
   left: 0;
   z-index: 1;
+  background-color: black;
+  transition-duration: 4s;
 }
 
 #startbutton {
@@ -230,10 +264,7 @@ p.textbox2 {
   font-size: large;
 }
 
-.toggle1 {
+#startbutton:hover {
+  background-color: black;
   color: white;
-}
-
-.toggle2 {
-  color: black;
 }
