@@ -178,6 +178,7 @@ $(document).ready(function () {
 
   Enemy.prototype.cast = function (skillset) {
     $textbox1 = $('p.textbox1')
+    $countdownBar = $('#')
     console.log('enemy casting!')
     // generate random spells
     var num = Math.floor(Math.random() * this[skillset].length)
@@ -191,6 +192,7 @@ $(document).ready(function () {
     $textbox1.css('color', 'black')
 
     $textbox1.text(this.currentCast + '!')
+
     // $playerInput.css('background-color', 'white')
     // $counterForCurrent.text(this.currentCounter)
     // console.log(this.currentCounter)
