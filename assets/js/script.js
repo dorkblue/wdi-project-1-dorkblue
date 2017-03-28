@@ -2,13 +2,20 @@ $(document).ready(function () {
   console.log('linked!')
 
   // $textbox = $('#textbox')
-  $enemyHP = $('#enemyHP') // change variable name later
-  $counterForCurrent = $('#countercast')
-
+  // $enemyHP = $('#enemyHP') // change variable name later
+  // $counterForCurrent = $('#countercast')
+  // $playerHP = $('#playerHP')
   $playerInput = $('#playerInput')
+  $startButton = $('#startbutton')
+  $overlay = $('.overlay')
+  $startButton.on('click', function () {
+    // console.log('clicked!')
+    var evilmomo = new Enemy('Evil Momo', 10, 3, -1)
+    evilmomo.start()
+    $startButton.css('display', 'none')
+    $overlay.hide()
 
-  $testButton = $('#testButton')
-  $playerHP = $('#playerHP')
+  })
 
   function Enemy (name, spells1, spells2, modifier, quote) {
     this.name = name
@@ -16,9 +23,9 @@ $(document).ready(function () {
     this.castTimer = 0
     this.countdown = 0
 
-    this.enemyHP = 90
+    this.enemyHP = 100
     this.enemyHPDisplay = $('#enemyHP')
-    this.playerHP = 70
+    this.playerHP = 50
     this.playerHPDisplay = $('#playerHP')
 
     this.currentCast = ''
@@ -38,11 +45,6 @@ $(document).ready(function () {
   }
 
   Enemy.prototype.start = function () {
-    // console.log('before keypress')
-    // console.log(this)
-    // $enemyHP.text(this.name + '\'s HP ' + this.enemyHP)
-    // $playerHP.text('Your HP ' + this.playerHP)
-
     $playerInput.keyup(function () {
       // console.log('keypressed!')
       this.playerInput()
@@ -54,14 +56,16 @@ $(document).ready(function () {
   Enemy.prototype.counterListUpdate = function () {
     $countDiv = $('.counterlist')
 
+    $countDiv.empty()
+
     this.counters.forEach(function (counter) {
-      $h4 = $('<h4>')
-      $h4.attr('id', counter)
-      $countDiv.append($h4.text(counter))
+      $td = $('<td>')
+      // $td.attr('id', counter)
+      $countDiv.append($td.text(counter))
 
       console.log(counter)
-      $test = $('<h4>')
-      console.log($test.text())
+      // $test = $('<td>')
+      // console.log($test.text())
     })
   }
 
@@ -70,14 +74,28 @@ $(document).ready(function () {
     // console.log($playerInput.val())
     // console.log(this.currentCounter)
     // console.log(this)
+    $textbox2 = $('p.textbox2')
     if ($playerInput.val() === this.currentCounter) { // NOTE1.1: if counter is correct, then activate function
       console.log('right input!')
-      // this.playerInputReset()
+      $textbox2.text($playerInput.val())
+      $textbox2.css('display', 'inline')
+      $textbox2.css('color', 'black')
+
       this.damage('enemyHP')
     }
   }
 
   Enemy.prototype.damage = function (playerOrEnemy) {
+    $textbox1 = $('p.textbox1')
+    $textbox2 = $('p.textbox2')
+    if (playerOrEnemy === 'playerHP') {
+      $textbox1.css('color', 'red')
+      $textbox2.css('display', 'none')
+    } else if (playerOrEnemy === 'enemyHP') {
+      $textbox1.css('display', 'none')
+      $textbox2.css('color', 'red')
+    }
+
     this.toggleDisplayOff(this.currentCounter)
     clearInterval(this.castTimer)
     $playerInput.val('')
@@ -93,11 +111,7 @@ $(document).ready(function () {
   Enemy.prototype.heartsDisplay = function (playerOrEnemy) {
     console.log(playerOrEnemy)
     $lifebar = $('#' + playerOrEnemy)
-    console.log($lifebar)
-    $life = $lifebar.find('div#life')
-    console.log($life)
-
-    $life.remove()
+    $lifebar.empty()
 
     var fullHeart = (this[playerOrEnemy] - this[playerOrEnemy] % 20) / 20
 
@@ -105,7 +119,9 @@ $(document).ready(function () {
 
     for (var i = fullHeart; i > 0; i--) {
       $div = $('<div>')
-      $div.attr('id', 'life')
+      // $div.attr('id', 'life')
+      $div.addClass('life')
+
       $img = $('<img>').attr('src', 'assets/image/full-heart.png')
       $div.append($img)
       $lifebar.append($div)
@@ -113,7 +129,7 @@ $(document).ready(function () {
 
     for (var j = halfHeart; j > 0; j--) {
       $div = $('<div>')
-      $div.attr('id', 'life')
+      $div.addClass('life')
       $img = $('<img>').attr('src', 'assets/image/half-heart.png')
       $div.append($img)
       $lifebar.append($div)
@@ -125,14 +141,13 @@ $(document).ready(function () {
       $playerInput.prop('disabled', true)
       console.log('checking both enemyHP!')
       if (this.enemyHP === 0) {
-        // console.log('draco lost!')
-        $enemyHP.text('You\'ve defeated ' + this.name)
+        console.log('momo won!')
       } else {
-        // console.log('you lost!')
-        $enemyHP.text(this.name + ' has defeated you')
+        console.log('momo lost!')
       }
     } else {
-      this.preCast()
+      setTimeout(this.preCast.bind(this), 1000)
+      // this.preCast()
     }
   }
 
@@ -140,26 +155,33 @@ $(document).ready(function () {
     var num1 = Math.floor(Math.random() * this.skillSet1.length)
     var num2 = Math.floor(Math.random() * this.skillSet2.length)
 
+    $textbox1 = $('p.textbox1')
+    $textbox2 = $('p.textbox2')
+    $textbox1.css('display', 'none')
+    $textbox2.css('display', 'none')
+
     if (num1 > num2) {
-      this.cast('skillSet1')
+      setTimeout(this.cast.bind(this, 'skillSet1'), 2000)
     } else if (num2 >= num1) {
-      this.cast('skillSet2')
+      setTimeout(this.cast.bind(this, 'skillSet2'), 2000)
     }
   }
 
   Enemy.prototype.cast = function (skillset) {
+    $textbox1 = $('p.textbox1')
     console.log('enemy casting!')
     // generate random spells
     var num = Math.floor(Math.random() * this[skillset].length)
 
-    $textbox1 = $('p.textbox1')
-
     this.currentCast = this[skillset][num].name
     this.currentCounter = this[skillset][num].counter
-    this.countdown = this[skillset][num].time * 1000 * this.modifier
+    this.countdown = (this[skillset][num].time + this.modifier) * 1000
+
+    $textbox1.css('display', 'inline')
+    $textbox1.css('color', 'black')
 
     $textbox1.text(this.currentCast + '!')
-    $counterForCurrent.text(this.currentCounter)
+    // $counterForCurrent.text(this.currentCounter)
     // console.log(this.currentCounter)
 
     this.toggleDisplayOn(this.currentCounter)
@@ -170,9 +192,9 @@ $(document).ready(function () {
   }
 
   Enemy.prototype.toggleDisplayOn = function (counterToDisplay) {
-    $h4 = $('.counterlist h4')
+    $td = $('.counterlist td')
 
-    $h4.each(function (index, element) {
+    $td.each(function (index, element) {
       if ($(this).text() === counterToDisplay) {
         $(this).addClass('toggle1')
       }
@@ -180,15 +202,14 @@ $(document).ready(function () {
   }
 
   Enemy.prototype.toggleDisplayOff = function (counterToRemoveDisplay) {
-    $h4 = $('.counterlist h4')
+    $td = $('.counterlist td')
 
-    $h4.each(function (index, element) {
+    $td.each(function (index, element) {
       if ($(this).text() === counterToRemoveDisplay) {
         $(this).removeClass('toggle1')
       }
     })
   }
-
 
   Enemy.prototype.getCounters = function () {
     var allSkills = this.skillSet1.concat(this.skillSet2)
@@ -289,56 +310,7 @@ $(document).ready(function () {
       time: 3}
 
   ]
-  // generate spell to cast with Math.random on enemy.spells
-  // output spell on page
 
-  // $testButton.on('click', function () {
-  //   var test = draco.cast()
-  //   // console.log(test)
-  //   // console.log($textbox)
-  //   $textbox.text(draco.cast())
-  // })
-
-  var draco = new Enemy('Draco Malfoy', 10, 3, 1, 'Wait \'til my father hears about this!')
-  // draco.cast()
-  draco.start()
-  // draco.heartsDisplay('playerHP')
-
- // ////////////// SPELL SPEED TEST ///////////////
-  $divTest = $('div.test')
-
-  $spellToTest = $divTest.find('input').eq(0)
-  $spellToCheck = $divTest.find('input').eq(1)
-  var castTimer = 0
-  var seconds = 0
-// adding event listener on $spellToCheck
-
-  $spellToTest.keydown(function (e) {
-    if (e.keyCode === 9) {
-      console.log('time start!')
-      castTimer = setInterval(counter, 1000)
-    }
-  })
-
-  $spellToCheck.keypress(function (e) {
-    if (e.keyCode === 13) {
-      console.log('start count!')
-      clearInterval(castTimer)
-      console.log(seconds)
-      seconds = 0
-    }
-  })
-
-  function counter () {
-    seconds++
-    console.log(seconds)
-  }
-
-// ///////////////////////////////////////////
-
-// magical weather < Meteolojinx Recanto
-// darkness < Lumos
-// Serpensortia < Vipera Evanesca
-// Dementors < Patronus
-// Stunned < Rennervate
+  var preStart = new Enemy('', 4, 1, 0)
+  preStart.counterListUpdate()
 })

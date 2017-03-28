@@ -14,14 +14,69 @@ h1 {
   margin: 0 auto;
 }
 
+
 .container {
+  position: relative;
   display: flex;
-  min-height: 342px;
-  /*flex-wrap: wrap;*/
-  /*flex-direction: row;*/
+  min-height: 350px;
+  border: 2px dashed black;
+  /* flex-wrap: wrap; */
+  /* flex-direction: row; */
   width: 100%;
-  /*background-color: grey;*/
+  /* background-color: grey; */
   justify-content: center;
+}
+.overlay {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin: auto 0;
+  background-color: rgba(194, 194, 194, 0.4);
+  z-index: 2;
+
+}
+
+.shading {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin: auto 0;
+  background-color: rgba(51, 204, 255, 0.1);
+  z-index: 1;
+}
+
+#arrowdown {
+  position: absolute;
+  right: 70px;
+  bottom: 110px;
+  width: 50px;
+}
+#arrowleft {
+  position: absolute;
+  left: 140px;
+  bottom: 70px;
+  width: 100px;
+}
+/*#arrowright {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100px;
+}*/
+#smallarrowup {
+  position: absolute;
+  left: 50px;
+  top: 25px;
+  width: 35px;
+}
+#smallarrowdown {
+  position: absolute;
+  left: 250px;
+  top: 30px;
+  width: 50px;
+  transform: rotate(-20deg);
 }
 
 .board {
@@ -35,13 +90,13 @@ h1 {
 .up {
   position: relative;
   height: 50%;
-  background-color: rgba(0, 0, 0, 0.5)
+  /*background-color: rgba(0, 0, 0, 0.5)*/
 }
 
 .down {
   position: relative;
   height: 50%;
-  background-color: rgba(0, 0, 0, 0.5)
+  /*background-color: rgba(0, 0, 0, 0.5)*/
 }
 
 #enemyHP {
@@ -60,16 +115,17 @@ h1 {
   flex-direction: row-reverse;
 }
 
-#life {
+.life {
   width: 20px;
   margin: 0 5px 0 0;
 }
 
-#life img {
+.life img {
   width: 100%;
 }
 
 p.textbox1 {
+  display: none;
   position: absolute;
   border-bottom: 2px solid #666;
   width: 200px;
@@ -89,7 +145,29 @@ p.textbox1 {
   /* font-family: cursive; */
 }
 
-span.textbox1 {
+p.textbox2 {
+   display: none;
+  position: absolute;
+  border-bottom: 2px solid #666;
+  width: 200px;
+  /* height: 50px; */
+  height: auto;
+  text-align: left;
+  right: -170px;
+  top: 50px;
+  margin: 0;
+  border-radius: 10px;
+  line-height: 30px;
+  text-transform: capitalize;
+  font-size: 30px;
+  padding: 0 0 0 10px;
+  font-variant: small-caps;
+  font-style: italic;
+  /* font-family: cursive; */
+}
+
+/*span.textbox1 {
+  display: none;
   content: ' ';
   position: absolute;
   width: 0;
@@ -98,7 +176,7 @@ span.textbox1 {
   top: 60px;
   border: 15px dashed #666;
   border-color: transparent transparent transparent #666;
-}
+}*/
 
 #momo {
   position: absolute;
@@ -114,6 +192,8 @@ span.textbox1 {
 
 
 .counterlist {
+  display: flex;
+  flex-direction: column-reverse;
   background-color: rgba(0, 0, 0, 0.4);
   width: 30%;
   text-transform: uppercase;
@@ -122,14 +202,32 @@ span.textbox1 {
   justify-content: column;*/
 }
 
+.counterlist td {
+  margin: 7px auto;
+}
+
 .playerInput {
+  position: relative;
   background-color: yellow;
   width: 100%;
+  height: 30px;
 }
 
 #playerInput {
+  position: absolute;
   width: 100%;
-  height: 30px;
+  height: 100%;
+  left: 0;
+  z-index: 1;
+}
+
+#startbutton {
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  font-size: large;
 }
 
 .toggle1 {
