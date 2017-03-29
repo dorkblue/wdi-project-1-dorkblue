@@ -8,6 +8,7 @@ body {
 }
 
 h1 {
+  font-size: 3em;
   font-family: 'Kaushan Script', cursive;
   color: #1A1423;
   text-shadow: 1px 1px 1px #B4CDB7;
@@ -101,6 +102,7 @@ p.textbox1 {
   font-style: italic;
   transition-property: color;
   transition-delay: 1s;
+  font-family: 'Source Code Pro', monospace;
   /* font-family: cursive; */
 }
 
@@ -122,6 +124,7 @@ p.textbox2 {
   padding: 0 0 0 10px;
   font-variant: small-caps;
   font-style: italic;
+  font-family: 'Source Code Pro', monospace;
   /* font-family: cursive; */
 }
 
@@ -143,7 +146,7 @@ p.textbox2 {
   font-size: 1em;
   margin: 7px auto;
   font-family: 'Source Code Pro', monospace;
-
+  color: white;
 }
 
 .player {
@@ -242,11 +245,9 @@ p.textbox2 {
 }
 
 .toggle1 {
-  color: white;
-}
-
-.toggle2 {
-  color: black;
+  color: #1A1423;
+  text-shadow: 1px 1px 1px #B4CDB7;
+  font-size: 1.3em;
 }
 
 #instruction {
@@ -266,6 +267,7 @@ p.textbox2 {
 
 #instruction p {
   text-align: justify;
+  font-family: 'Source Code Pro', monospace;
 }
 
 #info1 {
@@ -277,6 +279,7 @@ p.textbox2 {
 
 #info1 p {
   text-align: justify;
+  font-family: 'Source Code Pro', monospace;
 }
 
 #info1 img {
@@ -292,7 +295,9 @@ p.textbox2 {
   right: 200px;
 }
 
-#info2 p {}
+#info2 p {
+  font-family: 'Source Code Pro', monospace;
+}
 
 #info2 img {
   position: absolute;
@@ -307,6 +312,9 @@ p.textbox2 {
   top: 70px;
   left: 20px;
   width: 100px;
+}
+#info3 p {
+  font-family: 'Source Code Pro', monospace;
 }
 
 #info3 img {
@@ -350,7 +358,8 @@ p.textbox2 {
   height: 100%;
   left: 0;
   z-index: 1;
-  background-color:
+  font-size: 22px;
+  font-family: 'Source Code Pro', monospace;
 }
 
 #startbutton {

@@ -116,9 +116,9 @@ $(document).ready(function () {
     this.timerId = 0
     this.countdown = 0
 
-    this.enemyHP = 50
+    this.enemyHP = 100
     this.enemyHPDisplay = $('#enemyHP')
-    this.playerHP = 50
+    this.playerHP = 100
     this.playerHPDisplay = $('#playerHP')
 
     this.currentCast = ''
@@ -263,6 +263,8 @@ $(document).ready(function () {
   // }
 
   Enemy.prototype.damage = function (playerOrEnemy) {
+    $playerInput = $('#playerInput')
+    $playerInput.val('')
     $countdownDisplay = $('#countdown')
     $countdownDisplay.removeClass('animate')
 
@@ -331,7 +333,6 @@ $(document).ready(function () {
       return
     } else if (this.enemyHP <= 0) {
       $playerInput.remove()
-      $momo.attr('src', 'assets/image/momo-victorypose.gif')
       this.timerId = setTimeout(winscreen, 1000)
       console.log('momo won!')
       return
