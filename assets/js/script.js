@@ -116,9 +116,9 @@ $(document).ready(function () {
     this.timerId = 0
     this.countdown = 0
 
-    this.enemyHP = 100
+    this.enemyHP = 50
     this.enemyHPDisplay = $('#enemyHP')
-    this.playerHP = 100
+    this.playerHP = 50
     this.playerHPDisplay = $('#playerHP')
 
     this.currentCast = ''
@@ -244,28 +244,25 @@ $(document).ready(function () {
     // console.log(spellToCast)
   }
 
-  Enemy.prototype.playerInput = function () {
-    $playerInput = $('#playerInput')
-    // $textbox2 = $('p.textbox2')
-    if ($playerInput.val() === this.currentCounter) {
-      console.log('playerInput is ' + this.name)
-      clearTimeout(this.castTimer)
-      clearTimeout(this.timerId)
-      $textbox2.text($playerInput.val())
-      $textbox2.css('display', 'inline')
-      $textbox2.css('color', 'black')
-
-      $playerInput.val('')
-      this.damage('enemyHP')
-    } else if ($playerInput.val() !== this.currentCounter) {
-      return
-    }
-  }
+  // Enemy.prototype.playerInput = function () {
+  //   $playerInput = $('#playerInput')
+  //   // $textbox2 = $('p.textbox2')
+  //   if ($playerInput.val() === this.currentCounter) {
+  //     console.log('playerInput is ' + this.name)
+  //     clearTimeout(this.castTimer)
+  //     clearTimeout(this.timerId)
+  //     $textbox2.text($playerInput.val())
+  //     $textbox2.css('display', 'inline')
+  //     $textbox2.css('color', 'black')
+  //
+  //     $playerInput.val('')
+  //     this.damage('enemyHP')
+  //   } else if ($playerInput.val() !== this.currentCounter) {
+  //     return
+  //   }
+  // }
 
   Enemy.prototype.damage = function (playerOrEnemy) {
-    $playerInput = $('#playerInput')
-    console.log('damage is ' + this.name)
-
     $countdownDisplay = $('#countdown')
     $countdownDisplay.removeClass('animate')
 
@@ -333,12 +330,13 @@ $(document).ready(function () {
       this.timerId = setTimeout(this.preCast.bind(this), 1000)
       return
     } else if (this.enemyHP <= 0) {
+      $playerInput.remove()
       $momo.attr('src', 'assets/image/momo-victorypose.gif')
       this.timerId = setTimeout(winscreen, 1000)
       console.log('momo won!')
       return
     } else if (this.playerHP <= 0) {
-      $playerInput.prop('disabled', true)
+      $playerInput.remove()
       this.timerId = setTimeout(losescreen, 1000)
       console.log('momo lost!')
       return
@@ -366,8 +364,29 @@ $(document).ready(function () {
   }
 
   Enemy.prototype.addListenerToInput = function () {
-    $playerInput = $('#playerInput')
-    $playerInput.on('keyup', this.playerInput.bind(this))
+    $('#playerInput').on('keyup', function () {
+      console.log(this)
+      console.log('detected playerinput')
+
+      //
+      // if ($('#playerInput').val()) {
+      //   console.log($('#playerInput').val())
+      //   console.log(this)
+      //   console.log(this.currentCounter)
+      // }
+      if ( ($('#playerInput').val()) === this.currentCounter) {
+        console.log(this)
+        console.log('playerInput is ' + this.name)
+        clearTimeout(this.castTimer)
+        clearTimeout(this.timerId)
+        $textbox2.text($('#playerInput').val())
+        $textbox2.css('display', 'inline')
+        $textbox2.css('color', 'black')
+
+        $('#playerInput').val('')
+        this.damage('enemyHP')
+      }
+    }.bind(this))
   }
 
   function winscreen () {
@@ -397,7 +416,17 @@ $(document).ready(function () {
   })
 
   $restart.on('click', function () {
-    $playerInput = $('#playerInput')
+    $playerInput = $('<input>')
+
+    $playerInput.attr('id', 'playerInput')
+    $playerInput.attr('autocorrect', 'off')
+    $playerInput.attr('spellcheck', 'false')
+    $playerInput.attr('autocomplete', 'off')
+    $playerInput.attr('autofocus', '')
+
+    console.log($playerInput)
+    $('div.player').append($playerInput)
+
     removeListener()
     $winscreen.css('display', 'none')
     $losescreen.css('display', 'none')
@@ -405,10 +434,8 @@ $(document).ready(function () {
     $textbox2.css('display', 'none')
     $momo.attr('src', 'assets/image/momo-standby.gif')
     $evilmomo.attr('src', 'assets/image/evil-momo-standby.gif')
-    $playerInput.prop('disabled', false)
     var evilmomo = new Enemy('Evil Momo2', 13, 3)
     evilmomo.addListenerToInput()
     evilmomo.start()
-    console.log(window)
   })
 })
