@@ -2,7 +2,7 @@ Momo the Wizard - a Typing Game
 =====
 Practice your knowledge of Harry Potter spells here with Momo from [Google Doodle - Halloween 2016](https://www.google.com/doodles/halloween-2016)
 
-## Where to play the game
+## Where To Play The Game
 [Momo the Wizard](https://wdi-sg.github.io/wdi-project-1-dorkblue/)
 
 ## Getting Started
@@ -35,7 +35,7 @@ I'm also a huge fan of typing game (or any game, really) that requires dexterity
 
 And this is how the idea of making a spell typing game came along.
 
-## The Rough idea or 'BEING AMBITIOUS' stage
+## The Rough Idea or 'BEING AMBITIOUS' stage
 1. A typing game that requires the player to not type what is being shown
 2. With some elements of RPG (Role-playing game)
 3. REALLY cool spell graphics
@@ -53,16 +53,16 @@ From the start, I've used **Object-Oriented Programming** because
 2. **Constructor** makes storing variables (property) & re-using those variables a piece of cake (prevents problem caused by hoisting)
 3. Reusability of prototype **method** for multiple instances
 
-##### Version 1:
+### Version 1:
 ![v1](http://i.imgur.com/MmYpEef.png "Version 1")
 
 >Built the core mechanics/skeleton of the game.
 
 My focus was working on the game logic and making sure that at least 70% of it is working.
 
-###### The Core Mechanics:
+#### The Core Mechanics:
 
-*Method to output the spell 'casted' by AI*
+**Method to output the spell 'casted' by AI**
 ```Javascript
 Enemy.prototype.cast = function () {
   // generate random spells
@@ -78,7 +78,7 @@ Enemy.prototype.cast = function () {
 }
 ```
 
-*Method to check for player input*
+**Method to check for player input**
 ```Javascript
   Enemy.prototype.playerInput = function () {
     if ($playerInput.val() === this.currentCounter) { // NOTE1.1: if counter is correct, then activate function
@@ -87,7 +87,7 @@ Enemy.prototype.cast = function () {
   }
   ```
 
-  Method to get random spells from spell database
+  **Method to get random spells from spell database**
   ```Javascript
   Enemy.prototype.getSpells = function (number, compendiumToGetFrom) {
   var spellsPlaceholder = compendiumToGetFrom
@@ -109,12 +109,12 @@ Enemy.prototype.cast = function () {
 }
 ```
 
-##### Version 2:
+### Version 2:
 ![v2](http://i.imgur.com/tUM1m4a.png "Version 2")
 >Reality check.
 Realization that alot of my ambitious ideas may not be achievable in 1 week's time.
 
-*Method to display correct number of hearts on screen*
+**Method to display correct number of hearts on screen**
 ```Javascript
 Enemy.prototype.heartsDisplay = function (playerOrEnemy) {
   $lifebar = $('#' + playerOrEnemy)
@@ -142,7 +142,7 @@ Enemy.prototype.heartsDisplay = function (playerOrEnemy) {
 }
 ```
 
-*Method to randomly select spell set to cast*
+**Method to randomly select spell set to cast**
 ```Javascript
 Enemy.prototype.preCast = function () {
   var num1 = Math.floor(Math.random() * this.skillSet1.length)
@@ -156,23 +156,23 @@ Enemy.prototype.preCast = function () {
 }
 ```
 
-###### Assets used:
+#### Assets used:
 ![heartsprite](http://orig05.deviantart.net/29b0/f/2016/295/6/c/sprites_heart_life_by_yukikootomiye-dalt7ak.png "heart sprite")
 
 ![momogif](http://68.media.tumblr.com/e7cf7167ae9f6c6dc15cfd5d2f0c3726/tumblr_oftnddYA1g1qbm9nvo4_250.gif "momo gif")
 
 ![momogif2](http://68.media.tumblr.com/7238fab2d3818848c7e5887c7140a14b/tumblr_oftnddYA1g1qbm9nvo3_250.gif "momo dead")
 
-##### Version 3:
+### Version 3:
 ![v3](http://i.imgur.com/Y6xzYTs.png "Version 3")
 
 >Game logic is 99% completed (or so I thought) sans code required for DOM manipulation.
 
-###### Major problem faced:
+#### Major problem faced:
 1. When 'Play Again', sometimes game ends abruptly
 2. When 'Play Again', loading bar that shows time left to type does not show
 
-##### Version 4: Final
+### Version 4: Final
 ![v4](https://media.giphy.com/media/aZO71ccCHo2QM/giphy.gif "version 4")
 
 # To improve
