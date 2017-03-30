@@ -313,11 +313,15 @@ p.textbox2 {
   font-family: 'Source Code Pro', monospace;
 }
 
+#staticinstruction {
+  position: absolute;
+}
+
 
 #info0 {
   position: absolute;
-  left: 165px;
-  top: 310px;
+  left: -235px;
+  top: 175px;
   width: 205px;
 }
 
@@ -336,8 +340,8 @@ p.textbox2 {
 
 #info1 {
   position: absolute;
-  right: 110px;
-  top: 260px;
+  left: 645px;
+  top: 110px;
   width: 250px;
 }
 
