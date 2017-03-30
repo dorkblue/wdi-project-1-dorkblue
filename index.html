@@ -13,11 +13,23 @@
   </header>
 
   <div class="outside">
+    <div id="staticinstruction">
+      <div class="" id="info1">
+        <p>To duel with Evil Momo, type the counter spells displayed in <span id="yellowbg">black</span>.<br><br>Certain spells like <br><span id="btmborder">Avada Kedavra</span><br> does not have a counter spell. Type <span><em>dodge</em></span> to avoid getting insta-killed.</p>
+        <img src="assets/image/down-arrow.png" alt="">
+      </div>
+
+      <div class="" id="info0">
+        <p>Type the counter spells here!<br>(Enter key not required)<br><br>Press <span><em>shift</em></span> to clear all your inputs</p>
+        <img src="assets/image/down-arrow.png" alt="">
+      </div>
+    </div>
 
     <div class="container">
 
       <div class="board">
         <div class="up">
+          <p class="name" id="top">Evil Momo</p>
           <div id="enemyHP">
             <div class="life">
               <img src="assets/image/full-heart.png" alt="">
@@ -43,6 +55,7 @@
 
         </div>
         <div class="down">
+          <p class="name" id="bottom">Momo</p>
           <div id="playerHP">
             <div class="life">
               <img src="assets/image/full-heart.png" alt="">
@@ -86,34 +99,41 @@
           <img src="assets/image/left-arrow.png" alt="">
         </div>
 
-        <div class="" id="info1">
-          <p>Counter Spells appear here. If spell can't be countered, type <strong>dodge</strong> to avoid damage.</p>
-          <img src="assets/image/down-arrow.png" alt="">
-        </div>
-
         <div class="" id="info2">
           <p><em><strong>Evil Momo</strong></em> <small>(meowhahaha)</small></p>
           <img id="smallarrowdown" src="assets/image/small-down-arrow.png" alt="">
-
         </div>
 
         <div class="" id="info3">
-          <p><em><strong>Evil Momo's</strong> </em>health</p>
-          <img src="assets/image/small-up-arrow.png" alt="">
+          <p>Evil Momo's spell appears here!</p>
+          <img src="assets/image/down-arrow.png" alt="">
+        </div>
+        <div id="emptybox">
 
         </div>
-
       </div>
 
       <div class="winscreen">
         <p>Momo Won!</p>
         <img src="assets/image/momo-victorypose-trans.gif" alt="">
-        <button type="button" name="restart" class="restart">Play Again.</button>
+        <div class="restartDiv">
+          <h3>Play Again!</h3>
+          <button type="button" name="restart" class="restart" id="easy">Easy</button>
+          <button type="button" name="restart" class="restart" id="medium">Medium</button>
+          <button type="button" name="restart" class="restart" id="hard">Hard</button>
+          <button type="button" name="restart" class="restart" id="lunatic">Lunatic</button>
+        </div>
       </div>
       <div class="losescreen">
         <p>Momo Lost!</p>
         <img src="assets/image/momo-lost.gif" alt="">
-        <button type="button" name="restart" class="restart">Play Again.</button>
+        <div class="restartDiv">
+          <h3>Play Again!</h3>
+          <button type="button" name="restart" class="restart" id="easy">Easy</button>
+          <button type="button" name="restart" class="restart" id="medium">Medium</button>
+          <button type="button" name="restart" class="restart" id="hard">Hard</button>
+          <button type="button" name="restart" class="restart" id="lunatic">Lunatic</button>
+        </div>
       </div>
 
     </div>
@@ -122,13 +142,14 @@
     </div>
 
     <div class="player">
-      <button id="startbutton" type="button" name="button">Start</button>
+      <button id="startbutton" type="button" name="button">Click here to start typing!</button>
       <input id='playerInput' autocorrect="off" spellcheck="false" autocomplete="off" type="text" name="" value="" placeholder="Player Input Here" autofocus="">
     </div>
   </div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="assets/js/script.js" charset="utf-8"></script>
+  <!-- <script src="package.json" charset="utf-8"></script> -->
 </body>
 <footer>
   <!-- <a href='http://www.freepik.com/free-vector/set-of-hand-drawn-arrows_892779.htm'>Designed by Freepik</a> -->
