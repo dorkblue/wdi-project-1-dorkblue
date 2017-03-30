@@ -1,8 +1,6 @@
-[How to write readme - Markdown CheatSheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)  
-[How to write a good readme for github repo!](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
-
-# Momo the Wizard - a Typing Game
-Practice your knowledge of Harry Potter spells here with Momo from [Google Doodle - Halloween 2016](https://www.google.com/doodles/halloween-2016).
+Momo the Wizard - a Typing Game
+=====
+Practice your knowledge of Harry Potter spells here with Momo from [Google Doodle - Halloween 2016](https://www.google.com/doodles/halloween-2016)
 
 ## Where to play the game
 [Momo the Wizard](https://wdi-sg.github.io/wdi-project-1-dorkblue/)
@@ -13,7 +11,7 @@ Practice your knowledge of Harry Potter spells here with Momo from [Google Doodl
 
 >https://github.com/wdi-sg/wdi-project-1-dorkblue.git
 
-1. Git clone this link on your terminal
+1. Git clone link above on your terminal
 2. Open ```index.html``` on your code editor to edit html
 >index.html
 3. Open ```script.js``` to edit Javascript portion of the game
@@ -23,7 +21,6 @@ Practice your knowledge of Harry Potter spells here with Momo from [Google Doodl
 
 ## Development Stages
 
-## Brainstorming Stage
 ###### How the idea came into mind
 I'm not the biggest fan of Harry Potter, but I always thought it would be cool (minus the possibility of dying) to be able to duel like the wizards do.
 
@@ -43,20 +40,29 @@ And this is how the idea of making a spell typing game came along.
 2. With some elements of RPG (Role-playing game)
 3. REALLY cool spell graphics
 4. Different opponents with different spell sets and quotes with reference to the actual Harry Potter franchise.
+5. AI capable of casting random spell at a random time
+6. Random event (magical weather, darkness) that changes the game board, that can be solved with spells (meteolojinx recanto, lumos maxima)
+7. Typing healing spells regain hearts
 
 ## Actual Coding stage
 With ```Prima's (WDI Instructor)``` blessing, I started to work on the early version of the game.
 
-Version 1:
+From the start, I've used **Object-Oriented Programming** because
+
+1. Shorter code, easy to read and organize
+2. **Constructor** makes storing variables (property) & re-using those variables a piece of cake (prevents problem caused by hoisting)
+3. Reusability of prototype **method** for multiple instances
+
+##### Version 1:
 ![v1](http://i.imgur.com/MmYpEef.png "Version 1")
 
 >Built the core mechanics/skeleton of the game.
 
 My focus was working on the game logic and making sure that at least 70% of it is working.
 
-The Core Mechanics:
+###### The Core Mechanics:
 
-Method to output the spell 'casted' by AI
+*Method to output the spell 'casted' by AI*
 ```Javascript
 Enemy.prototype.cast = function () {
   // generate random spells
@@ -72,7 +78,7 @@ Enemy.prototype.cast = function () {
 }
 ```
 
-Method to check for player input
+*Method to check for player input*
 ```Javascript
   Enemy.prototype.playerInput = function () {
     if ($playerInput.val() === this.currentCounter) { // NOTE1.1: if counter is correct, then activate function
@@ -103,12 +109,12 @@ Method to check for player input
 }
 ```
 
-Version 2:
+##### Version 2:
 ![v2](http://i.imgur.com/tUM1m4a.png "Version 2")
 >Reality check.
 Realization that alot of my ambitious ideas may not be achievable in 1 week's time.
 
-Method to display correct number of hearts on screen
+*Method to display correct number of hearts on screen*
 ```Javascript
 Enemy.prototype.heartsDisplay = function (playerOrEnemy) {
   $lifebar = $('#' + playerOrEnemy)
@@ -136,7 +142,7 @@ Enemy.prototype.heartsDisplay = function (playerOrEnemy) {
 }
 ```
 
-Method to randomly select spell set to cast
+*Method to randomly select spell set to cast*
 ```Javascript
 Enemy.prototype.preCast = function () {
   var num1 = Math.floor(Math.random() * this.skillSet1.length)
@@ -150,14 +156,45 @@ Enemy.prototype.preCast = function () {
 }
 ```
 
-Inspiration/Assets used:
+###### Assets used:
 ![heartsprite](http://orig05.deviantart.net/29b0/f/2016/295/6/c/sprites_heart_life_by_yukikootomiye-dalt7ak.png "heart sprite")
 
 ![momogif](http://68.media.tumblr.com/e7cf7167ae9f6c6dc15cfd5d2f0c3726/tumblr_oftnddYA1g1qbm9nvo4_250.gif "momo gif")
 
 ![momogif2](http://68.media.tumblr.com/7238fab2d3818848c7e5887c7140a14b/tumblr_oftnddYA1g1qbm9nvo3_250.gif "momo dead")
 
-Version 3:
+##### Version 3:
 ![v3](http://i.imgur.com/Y6xzYTs.png "Version 3")
 
-Game logic is 99% completed (I thought) sans code required for DOM manipulation
+>Game logic is 99% completed (or so I thought) sans code required for DOM manipulation.
+
+###### Major problem faced:
+1. When 'Play Again', sometimes game ends abrupt
+2. When 'Play Again', loading bar that shows time left to type does not show
+
+
+code snippet here
+
+
+
+
+
+
+##### Version 4: Final
+![v4](https://media.giphy.com/media/aZO71ccCHo2QM/giphy.gif "version 4")
+
+# Built With
+* **JavaScript** - Game Logic
+* **jQuery** - DOM Manipulation
+* **CSS** - Aesthetics
+* **HTML** - Web Page Structure
+* **[ezgif](https://ezgif.com/)** - Gif editing
+
+# Authors
+Lee Shue Ze
+
+# Acknowledgements/Credits
+![gif](https://static1.squarespace.com/static/5331f0a8e4b054ff7c32dc3d/t/538febc0e4b07ccd65b40223/1401940949229/envys2.gif?format=500w)
+* The very talented animator **[Olivia When](http://www.oliviawhen.com/)**
+* The actual Momo game on [Google Doodle - Halloween 2016](https://www.google.com/doodles/halloween-2016)
+* [YukikoOtomiye](http://yukikootomiye.deviantart.com/)
