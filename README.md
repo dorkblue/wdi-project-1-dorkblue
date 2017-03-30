@@ -169,19 +169,17 @@ Enemy.prototype.preCast = function () {
 >Game logic is 99% completed (or so I thought) sans code required for DOM manipulation.
 
 ###### Major problem faced:
-1. When 'Play Again', sometimes game ends abrupt
+1. When 'Play Again', sometimes game ends abruptly
 2. When 'Play Again', loading bar that shows time left to type does not show
-
-
-code snippet here
-
-
-
-
-
 
 ##### Version 4: Final
 ![v4](https://media.giphy.com/media/aZO71ccCHo2QM/giphy.gif "version 4")
+
+# To improve
+1. More variety of spells
+2. Better & clearer way of conveying game instructions to player
+3. Animation on events (AI casting spell, displaying the counter spell, when 'damaged') to make it more user friendly
+4. Whatever that is lacking from 'BEING AMBITIOUS'
 
 # Built With
 * **JavaScript** - Game Logic

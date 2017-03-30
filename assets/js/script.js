@@ -1,14 +1,11 @@
 $(document).ready(function () {
   console.log('linked!')
 
-  // $playerInput = $('#playerInput')
   var $startButton = $('#startbutton')
   var $overlay = $('.overlay')
   var $momo = $('#momo2 img')
   var $evilmomo = $('#momo img')
   var $restartButton = $('.restart')
-  var $easy = $('#easy')
-  var $medium = $('#medium')
   var $winscreen = $('.winscreen')
   var $losescreen = $('.losescreen')
   var $textbox1 = $('p.textbox1')
@@ -235,10 +232,9 @@ $(document).ready(function () {
 // Method to output the spells selected by preCast
   Enemy.prototype.cast = function (skillset) {
     console.log(this.name + ' is casting')
-    // clearTimeout(this.timerId)
+
     var $countdownDisplay = $('#countdown')
-    // console.log('enemy casting!')
-    // generate random spells
+    // generate random numbers to choose spells in array
     var num = Math.floor(Math.random() * this[skillset].length)
 
     this.currentCast = this[skillset][num].name
@@ -254,32 +250,10 @@ $(document).ready(function () {
     $countdownDisplay.css('animation-duration', this.countdown + 's')
     $countdownDisplay.addClass('animate')
 
-    // $counterForCurrent.text(this.currentCounter)
-    // console.log(this.currentCounter)
-
     this.toggleDisplayOn(this.currentCounter)
 
     this.castTimer = setTimeout(this.damage.bind(this, 'playerHP'), this.countdown * 1000)
-    // console.log(spellToCast)
   }
-
-  // Enemy.prototype.playerInput = function () {
-  //   $playerInput = $('#playerInput')
-  //   // $textbox2 = $('p.textbox2')
-  //   if ($playerInput.val() === this.currentCounter) {
-  //     console.log('playerInput is ' + this.name)
-  //     clearTimeout(this.castTimer)
-  //     clearTimeout(this.timerId)
-  //     $textbox2.text($playerInput.val())
-  //     $textbox2.css('display', 'inline')
-  //     $textbox2.css('color', 'black')
-  //
-  //     $playerInput.val('')
-  //     this.damage('enemyHP')
-  //   } else if ($playerInput.val() !== this.currentCounter) {
-  //     return
-  //   }
-  // }
 
 // Method to update the numbers on enemyHP & playerHP property of instance
   Enemy.prototype.damage = function (playerOrEnemy) {
@@ -289,11 +263,9 @@ $(document).ready(function () {
     $countdownDisplay.removeClass('animate')
 
     if (playerOrEnemy === 'playerHP') {
-      // $textbox1.css('color', 'red')
       $textbox2.css('display', 'none')
     } else if (playerOrEnemy === 'enemyHP') {
       $textbox1.css('display', 'none')
-      // $textbox2.css('color', 'red')
     }
 
     this.toggleDisplayOff(this.currentCounter)
@@ -308,7 +280,7 @@ $(document).ready(function () {
       this[playerOrEnemy] -= 10
     }
     this.heartsDisplay(playerOrEnemy)
-    // check game status here
+
     this.gameEnd()
   }
 
@@ -323,7 +295,7 @@ $(document).ready(function () {
 
     for (var i = fullHeart; i > 0; i--) {
       var $div = $('<div>')
-      // $div.attr('id', 'life')
+
       $div.addClass('life')
 
       var $img = $('<img>').attr('src', 'assets/image/full-heart.png')
@@ -388,17 +360,7 @@ $(document).ready(function () {
   }
 // Method to add event listener to input#playerInput
   Enemy.prototype.addListenerToInput = function () {
-    console.log('listener added!')
     $('#playerInput').on('keyup', function (e) {
-      console.log(this)
-      console.log('detected playerinput')
-
-      //
-      // if ($('#playerInput').val()) {
-      //   console.log($('#playerInput').val())
-      //   console.log(this)
-      //   console.log(this.currentCounter)
-      // }
       if (e.keyCode === 16) {
         console.log('shift pressed')
         $('#playerInput').val('')
@@ -416,23 +378,23 @@ $(document).ready(function () {
       }
     }.bind(this))
   }
-
+// fn to display winning screen
   function winscreen () {
     $winscreen.css('display', 'block')
     $('#staticinstruction').css('display', 'none')
   }
-
+// fn to display losing screen
   function losescreen () {
     $losescreen.css('display', 'block')
     $('#staticinstruction').css('display', 'none')
   }
-
+// fn to remove listener on player <input>
   function removeListener () {
     var $playerInput = $('#playerInput')
     $('div.player').off('keyup', $playerInput)
     console.log('listener removed')
   }
-
+// fn to create new player <input>
   function newPlayerInput () {
     var $newPlayerInput = $('<input>')
     $newPlayerInput.attr('id', 'playerInput')
@@ -442,7 +404,7 @@ $(document).ready(function () {
     $newPlayerInput.attr('autofocus', '')
     $('div.player').append($newPlayerInput)
   }
-
+// fn to reset game board
   function restartReset () {
     removeListener()
     newPlayerInput()
@@ -454,9 +416,10 @@ $(document).ready(function () {
     $evilmomo.attr('src', 'assets/image/evil-momo-standby.gif')
   }
 
+// pre-game start instruction display purpose
   var preStart = new Enemy('', 4, 1)
   preStart.counterListUpdate()
-
+// add event listener on start button
   $startButton.on('click', function () {
     var evilmomo = new Enemy('Evil Momo', 10, 1, 60, 100, 1, 'easy')
     evilmomo.addListenerToInput()
@@ -464,20 +427,15 @@ $(document).ready(function () {
     $startButton.css('display', 'none')
     $overlay.hide()
   })
-
-  // name, spells1, spells2, enemyHP, playerHP, modifier
-
+// add event listener on restart difficulty button on end game screen
   $restartButton.on('click', function (e) {
     var evilmomo = null
     restartReset()
     if (e.currentTarget.id === 'easy') {
-      console.log('easy')
       evilmomo = new Enemy('Evil Momo', 10, 1, 60, 100, 1, 'easy')
     } else if (e.currentTarget.id === 'medium') {
-      console.log('medium')
       evilmomo = new Enemy('Evil Momo', 13, 3, 100, 100, 0, 'medium')
     } else if (e.currentTarget.id === 'hard') {
-      console.log('hard')
       evilmomo = new Enemy('Evil Momo', 13, 3, 100, 60, -1, 'hard')
     } else if (e.currentTarget.id === 'lunatic') {
       evilmomo = new Enemy('Evil Momo', 13, 3, 100, 30, -2, 'lunatic')
