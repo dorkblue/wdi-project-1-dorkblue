@@ -21,4 +21,17 @@ Practice your knowledge of Harry Potter spells here with Momo from [Google Doodl
 4. Open ```stylesheet.css``` to edit CSS portion of the game
 >assets/css/stylesheet.css
 
+## Brainstorming Stage
+
+
 ## Development Stages
+Version 1:
+![v1](http://i.imgur.com/MmYpEef.png "Version 1")
+
+
+
+![v2](http://i.imgur.com/tUM1m4a.png "Version 2")
+
+
+
+![v3](http://i.imgur.com/Y6xzYTs.png "Version 3")
