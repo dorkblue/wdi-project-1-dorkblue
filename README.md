@@ -5,6 +5,24 @@ Practice your knowledge of Harry Potter spells here with Momo from [Google Doodl
 ## Where To Play The Game
 [Momo the Wizard](https://wdi-sg.github.io/wdi-project-1-dorkblue/)
 
+## How To Play The Game
+![howtoplay](http://i.imgur.com/WaKENsZ.png "How to play")
+
+1. This is a one player game vs AI
+2. AI will 'cast' a spell around the yellow box area on the right
+3. To counter the spell casted, type the counter spell on the input box below
+4. All the counter spells will be shown on the long yellow box on the right
+5. The right counter to type is the one that is displayed in black
+6. Some spells that cannot be countered will not be displayed on the right yellow box. Type dodge to prevent damage.
+7. Spells that needs to be 'dodged' will kill player instantly if player did not type 'dodge' in time
+8. A timer bar will run on top of the input bar to indicate time left to type the counter spell
+9. Each successful counter by the player will reduce the number of hearts of the AI
+10. To win the game, reduce the heart of AI to zero hearts while making sure your hearts does not go to zero
+
+Tip: To instantly remove all your inputs, press **_SHIFT_**.
+
+Challenge yourself after a few rounds of practice by playing the 'lunatic' mode.
+
 ## Getting Started
 ###### If you would like to improve/add features to the game
 
@@ -174,6 +192,27 @@ Enemy.prototype.preCast = function () {
 
 ### Version 4: Final
 ![v4](https://media.giphy.com/media/aZO71ccCHo2QM/giphy.gif "version 4")
+
+
+```JavaScript
+$restartButton.on('click', function (e) {
+  var evilmomo = null
+  restartReset()
+  if (e.currentTarget.id === 'easy') {
+    evilmomo = new Enemy('Evil Momo', 10, 1, 60, 100, 1, 'easy')
+  } else if (e.currentTarget.id === 'medium') {
+    evilmomo = new Enemy('Evil Momo', 13, 3, 100, 100, 0, 'medium')
+  } else if (e.currentTarget.id === 'hard') {
+    evilmomo = new Enemy('Evil Momo', 13, 3, 100, 60, -1, 'hard')
+  } else if (e.currentTarget.id === 'lunatic') {
+    evilmomo = new Enemy('Evil Momo', 13, 3, 100, 30, -2, 'lunatic')
+  }
+  $('#staticinstruction').css('display', 'block')
+
+  evilmomo.addListenerToInput()
+  evilmomo.start()
+})
+```
 
 # To improve
 1. More variety of spells
